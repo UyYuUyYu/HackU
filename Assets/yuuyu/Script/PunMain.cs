@@ -11,6 +11,7 @@ public class PunMain : MonoBehaviourPunCallbacks
     {
         ConentPUNServer();
     }
+
     #region Method
     [ContextMenu("StartPUN")]
     public void ConentPUNServer() 
@@ -21,7 +22,6 @@ public class PunMain : MonoBehaviourPunCallbacks
     }
     public void DisconectPUNServer()
     {
-        // Photonのサーバーから切断する
         PhotonNetwork.Disconnect(); 
     }
 
@@ -31,10 +31,7 @@ public class PunMain : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    public void InputPlayerName(string _playerName)
-    {
-        playerName=_playerName;
-    }
+    
     
     #region PUNCallBucks
     public override void OnConnectedToMaster() 
