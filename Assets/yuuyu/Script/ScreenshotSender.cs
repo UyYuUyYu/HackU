@@ -11,6 +11,8 @@ public class ScreenshotSender : MonoBehaviourPun
     public Camera screenshotCamera; // キャプチャに使うカメラ
     public RawImage displayImage;   // 受信した画像を表示するUI (RawImage)
 
+    private byte[] imageData;
+
     void Update()
     {
         // スペースキーを押したら画像をキャプチャして送信
@@ -41,7 +43,7 @@ public class ScreenshotSender : MonoBehaviourPun
         Destroy(renderTexture);
 
         // PNGフォーマットにエンコード
-        byte[] imageData = screenshot.EncodeToPNG();
+        imageData = screenshot.EncodeToPNG();
 
         ViewShot(imageData);
 
