@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Mediapipe.Unity
@@ -21,8 +22,12 @@ namespace Mediapipe.Unity
     [SerializeField] private float _landmarkRadius = 15.0f;
     [SerializeField] private Color _connectionColor = Color.white;
     [SerializeField, Range(0, 1)] private float _connectionWidth = 1.0f;
-    [SerializeField] private GameObject _landmarkPrefab; // 追加: 生成するオブジェクトのPrefab
-    [SerializeField] private GameObject _landmarkPrefab2; // 追加: 生成するオブジェクトのPrefab
+    [SerializeField] private GameObject[] _landmarkPrefabs; // エフェクトの配列を管理
+    [SerializeField] private Vector3 _effectPositionOffset = Vector3.zero; // エフェクト位置のオフセットをInspectorで編集可能
+    private GameObject _currentEffect = null; // 現在のエフェクトを保持
+    private bool _effectPlaying = false; // エフェクトの再生状態を追跡
+    public bool IsEffectPlaying => _effectPlaying;
+
 
     private List<GameObject> _generatedObjects = new List<GameObject>(); // 生成したオブジェクトのリスト
 
@@ -89,28 +94,27 @@ namespace Mediapipe.Unity
 
 
 
-// エフェクトを手の位置に生成するメソッド
+
+// Draw メソッドの修正版
 public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
 {
     if (ActivateFor(targets))
     {
         ClearGeneratedObjects(); // 前回生成したオブジェクトを削除
-        if (targets.Count == 2 && AreHandsTogether(targets)) // 両手が近づいたときの判定
-        {
-            UnityEngine.Debug.Log("Both hands together: Special effect triggered");
-            GenerateEffectForBothHands(targets); // 両手用のエフェクトを生成
-        }
-        else
-        {
-            for (int i = 0; i < targets.Count; i++)
-            {
-                var landmarkList = targets[i];
 
-                if (IsOpenHand(landmarkList)) // 「パー」の時にエフェクトを生成
-                {
-                    UnityEngine.Debug.Log($"Hand {i}: Open hand detected");
-                    GenerateEffectAtHandPosition(landmarkList); // 手の位置にエフェクト生成
-                }
+        for (int i = 0; i < targets.Count; i++)
+        {
+            var landmarkList = targets[i];
+
+            if (IsOpenHand(landmarkList)) // 「パー」の時にエフェクトを生成
+            {
+                Debug.Log($"Hand {i}: Open hand detected");
+                GenerateEffectAtHandPosition(landmarkList, _landmarkPrefabs[0]); // パー用エフェクト生成
+            }
+            else if (IsVSignHand(landmarkList)) // 「チョキ」の時に別のエフェクトを生成
+            {
+                Debug.Log($"Hand {i}: V-sign hand detected");
+                GenerateEffectAtHandPosition(landmarkList, _landmarkPrefabs[1]); // チョキ用エフェクト生成
             }
         }
 
@@ -119,6 +123,19 @@ public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
             if (annotation != null) { annotation.Draw(target, visualizeZ); }
         });
     }
+}
+// NormalizedLandmarkをワールド座標に変換
+private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
+{
+    // 正規化された座標 (0~1) をスクリーン座標に変換
+    Vector3 screenPosition = new Vector3(
+        landmark.X * Screen.width,
+        (1 - landmark.Y) * Screen.height, // Y座標は上下逆のため反転
+        landmark.Z * 5.0f // 深度のスケール調整（適宜変更）
+    );
+
+    // スクリーン座標をワールド座標に変換
+    return Camera.main.ScreenToWorldPoint(screenPosition);
 }
 
 // 両手が近いかどうかを判定するメソッド
@@ -137,47 +154,80 @@ private bool AreHandsTogether(IList<NormalizedLandmarkList> targets)
     return distance < handsTogetherThreshold;
 }
 
-// 両手の重心位置にエフェクトを生成
-private void GenerateEffectForBothHands(IList<NormalizedLandmarkList> targets)
-{
-    if (_landmarkPrefab == null) return;
-
-    // 両手の重心を計算
-    Vector3 leftHandPosition = GetHandCenter(targets[0]);
-    Vector3 rightHandPosition = GetHandCenter(targets[1]);
-    Vector3 centerPosition = (leftHandPosition + rightHandPosition) / 2.0f; // 中央位置
-
-    // 特別なエフェクトを生成
-    var specialEffect = Instantiate(_landmarkPrefab2); // 別のエフェクトにしたい場合は新しいPrefabを指定
-    specialEffect.transform.position = centerPosition; // 両手の中央位置に配置
-    _generatedObjects.Add(specialEffect);
-}
 
 // 手の重心を計算するメソッド
 private Vector3 GetHandCenter(NormalizedLandmarkList landmarkList)
 {
     Vector3 center = Vector3.zero;
+
+    // 各ランドマークのワールド座標を計算してログに出力
     foreach (var landmark in landmarkList.Landmark)
     {
-        center += new Vector3(landmark.X, landmark.Y, landmark.Z);
+        Vector3 worldPosition = ConvertToWorldPosition(landmark);
+        Debug.Log($"Landmark world position: {worldPosition}");
+        center += worldPosition;
     }
+
     return center / landmarkList.Landmark.Count; // 平均値を取得
 }
 
-// エフェクトを手の位置に生成するメソッド
-private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList)
+
+
+// エフェクトを手の位置に生成するメソッド（修正版）
+// エフェクトを生成するメソッド（Prefabを指定可能）
+private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList, GameObject prefab)
 {
-    if (_landmarkPrefab == null) return;
+    if (prefab == null) return;
 
     // 手の重心（平均位置）を計算
     Vector3 handPosition = GetHandCenter(landmarkList);
 
+    // Z軸を固定（例: Z = 0）
+    handPosition.z = -4f; // 必要に応じて固定する値を変更
+
+    // ワールド座標をログに出力
+    Debug.Log($"Generating effect at hand position: {handPosition}");
+
     // エフェクトを生成
-    var effect = Instantiate(_landmarkPrefab);
-    effect.transform.position = handPosition; // 手の重心位置に配置
-    _generatedObjects.Add(effect); // 後で削除できるようリストに保存
+    var effect = Instantiate(prefab);
+    effect.transform.position = handPosition; // 手の重心位置に配置（Z軸固定）
+
+    // エフェクトを3秒後に削除
+    Destroy(effect, 3f); // 3秒後に自動で削除
+
+    // リストに追加して追跡（オプション、不要であれば削除可）
+    _generatedObjects.Add(effect);
 }
 
+
+// エフェクト再生状態を追跡するコルーチン
+private IEnumerator TrackEffectStatus(GameObject effect)
+{
+    _effectPlaying = true;
+
+    // パーティクルシステムがある場合、それを監視
+    var particleSystem = effect.GetComponent<ParticleSystem>();
+    if (particleSystem != null)
+    {
+        while (particleSystem.isPlaying)
+        {
+            yield return null; // 再生中は待機
+            Debug.Log("これずっと出てる？");
+        }
+    }
+
+    // 再生が終了したらログを出力し、フラグをリセット
+    Debug.Log("Effect has finished playing.");
+    _effectPlaying = false;
+
+    // エフェクトを削除
+    if (effect != null)
+    {
+        Destroy(effect);
+    }
+
+    _currentEffect = null; // 参照をクリア
+}
 // 指先の距離を計算して「パー」か判定するメソッド
 private bool IsOpenHand(NormalizedLandmarkList landmarkList)
 {
@@ -215,6 +265,58 @@ private bool IsOpenHand(NormalizedLandmarkList landmarkList)
     return AreFingersSpread(landmarkList);
 }
 
+// チョキを判定するメソッド（改良版）
+// チョキを判定するメソッド（簡易版）
+private bool IsVSignHand(NormalizedLandmarkList landmarkList)
+{
+    if (landmarkList == null || landmarkList.Landmark.Count < 21)
+    {
+        Debug.Log("ランドマークが不足しています。");
+        return false;
+    }
+
+    // ランドマークのインデックス
+    int indexTip = 8;    // 人差し指先端
+    int middleTip = 12;  // 中指先端
+    int ringTip = 16;    // 薬指先端
+    int pinkyTip = 20;   // 小指先端
+    int thumbTip = 4;    // 親指先端
+
+    // 距離を計算
+    float indexToMiddle = GetDistance(landmarkList.Landmark[indexTip], landmarkList.Landmark[middleTip]); // 人差し指と中指の距離
+    float indexToRing = GetDistance(landmarkList.Landmark[indexTip], landmarkList.Landmark[ringTip]);     // 人差し指と薬指の距離
+    float middleToRing = GetDistance(landmarkList.Landmark[middleTip], landmarkList.Landmark[ringTip]);   // 中指と薬指の距離
+    float indexToThumb = GetDistance(landmarkList.Landmark[indexTip], landmarkList.Landmark[thumbTip]);   // 人差し指と親指の距離
+    float middleToPinky = GetDistance(landmarkList.Landmark[middleTip], landmarkList.Landmark[pinkyTip]); // 中指と小指の距離
+
+    // 条件設定
+    const float vFingerThreshold = 0.06f;  // 人差し指と中指が近接している最大距離
+    const float otherFingerMinDistance = 0.08f; // 他の指が離れている最小距離
+
+    // 条件1: 人差し指と中指が適度に近い
+    bool isIndexMiddleClose = indexToMiddle < vFingerThreshold;
+
+    // 条件2: 他の指が離れている
+    bool areOtherFingersAway =
+        indexToRing > otherFingerMinDistance &&
+        middleToRing > otherFingerMinDistance &&
+        indexToThumb > otherFingerMinDistance &&
+        middleToPinky > otherFingerMinDistance;
+
+    // 条件に基づき「チョキ」と判定
+    if (isIndexMiddleClose && areOtherFingersAway)
+    {
+        Debug.Log("チョキが検出されました。");
+        return true;
+    }
+    else
+    {
+        Debug.Log("チョキの条件に一致しません。");
+        return false;
+    }
+}
+
+
 // 指が十分に開いているかを判定するメソッド
 private bool AreFingersSpread(NormalizedLandmarkList landmarkList)
 {
@@ -225,8 +327,8 @@ private bool AreFingersSpread(NormalizedLandmarkList landmarkList)
     float ringToPinky = GetDistance(landmarkList.Landmark[16], landmarkList.Landmark[20]);
 
     return indexToMiddle > spreadThreshold &&
-           middleToRing > spreadThreshold &&
-           ringToPinky > spreadThreshold;
+          middleToRing > spreadThreshold &&
+          ringToPinky > spreadThreshold;
 }
 
 // 2点間の距離を計算するヘルパーメソッド
