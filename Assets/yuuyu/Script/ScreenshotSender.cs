@@ -23,6 +23,12 @@ public class ScreenshotSender : MonoBehaviourPun
         }
     }
 
+    [ContextMenu("NameSet")]
+    public void ScrenShotMethod()
+    {
+        StartCoroutine(CaptureAndSendScreenshot());
+    }
+
     private IEnumerator CaptureAndSendScreenshot()
     {
         print("capture");
@@ -51,6 +57,12 @@ public class ScreenshotSender : MonoBehaviourPun
         photonView.RPC("ReceiveScreenshot", RpcTarget.Others, imageData);
 
         yield return null;
+    }
+    [ContextMenu("ViewSreanShot")]
+    public void InportImage()
+    {
+        ViewShot(ScreenShot.imageData);
+        displayImage.gameObject.SetActive(true);
     }
 
     private void ViewShot(byte[] _imageData)
