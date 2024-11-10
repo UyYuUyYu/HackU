@@ -11,6 +11,8 @@ public class ScreenshotSender : MonoBehaviourPun
     public Camera screenshotCamera; // キャプチャに使うカメラ
     public RawImage displayImage;   // 受信した画像を表示するUI (RawImage)
 
+    private byte[] imageData;
+
     void Update()
     {
         // スペースキーを押したら画像をキャプチャして送信
@@ -19,6 +21,12 @@ public class ScreenshotSender : MonoBehaviourPun
             print("カシャ");
             StartCoroutine(CaptureAndSendScreenshot());
         }
+    }
+
+    [ContextMenu("NameSet")]
+    public void ScrenShotMethod()
+    {
+        StartCoroutine(CaptureAndSendScreenshot());
     }
 
     private IEnumerator CaptureAndSendScreenshot()
@@ -41,7 +49,7 @@ public class ScreenshotSender : MonoBehaviourPun
         Destroy(renderTexture);
 
         // PNGフォーマットにエンコード
-        byte[] imageData = screenshot.EncodeToPNG();
+        imageData = screenshot.EncodeToPNG();
 
         ViewShot(imageData);
 
@@ -49,6 +57,12 @@ public class ScreenshotSender : MonoBehaviourPun
         photonView.RPC("ReceiveScreenshot", RpcTarget.Others, imageData);
 
         yield return null;
+    }
+    [ContextMenu("ViewSreanShot")]
+    public void InportImage()
+    {
+        ViewShot(ScreenShot.imageData);
+        displayImage.gameObject.SetActive(true);
     }
 
     private void ViewShot(byte[] _imageData)
