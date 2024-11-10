@@ -183,7 +183,7 @@ private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList, G
     Vector3 handPosition = GetHandCenter(landmarkList);
 
     // Z軸を固定（例: Z = 0）
-    handPosition.z = -15f; // 必要に応じて固定する値を変更
+    handPosition.z = -4f; // 必要に応じて固定する値を変更
 
     // ワールド座標をログに出力
     Debug.Log($"Generating effect at hand position: {handPosition}");
