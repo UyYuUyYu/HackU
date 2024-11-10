@@ -6,6 +6,7 @@
 // https://opensource.org/licenses/MIT.
 
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Mediapipe.Unity
@@ -23,6 +24,11 @@ namespace Mediapipe.Unity
     [SerializeField, Range(0, 1)] private float _connectionWidth = 1.0f;
     [SerializeField] private GameObject _landmarkPrefab; // 追加: 生成するオブジェクトのPrefab
     [SerializeField] private GameObject _landmarkPrefab2; // 追加: 生成するオブジェクトのPrefab
+    [SerializeField] private Vector3 _effectPositionOffset = Vector3.zero; // エフェクト位置のオフセットをInspectorで編集可能
+    private GameObject _currentEffect = null; // 現在のエフェクトを保持
+    private bool _effectPlaying = false; // エフェクトの再生状態を追跡
+    public bool IsEffectPlaying => _effectPlaying;
+
 
     private List<GameObject> _generatedObjects = new List<GameObject>(); // 生成したオブジェクトのリスト
 
@@ -89,7 +95,7 @@ namespace Mediapipe.Unity
 
 
 
-// エフェクトを手の位置に生成するメソッド
+
 public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
 {
     if (ActivateFor(targets))
@@ -120,6 +126,19 @@ public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
         });
     }
 }
+// NormalizedLandmarkをワールド座標に変換
+private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
+{
+    // 正規化された座標 (0~1) をスクリーン座標に変換
+    Vector3 screenPosition = new Vector3(
+        landmark.X * Screen.width,
+        (1 - landmark.Y) * Screen.height, // Y座標は上下逆のため反転
+        landmark.Z * 5.0f // 深度のスケール調整（適宜変更）
+    );
+
+    // スクリーン座標をワールド座標に変換
+    return Camera.main.ScreenToWorldPoint(screenPosition);
+}
 
 // 両手が近いかどうかを判定するメソッド
 private bool AreHandsTogether(IList<NormalizedLandmarkList> targets)
@@ -137,6 +156,8 @@ private bool AreHandsTogether(IList<NormalizedLandmarkList> targets)
     return distance < handsTogetherThreshold;
 }
 
+
+
 // 両手の重心位置にエフェクトを生成
 private void GenerateEffectForBothHands(IList<NormalizedLandmarkList> targets)
 {
@@ -147,9 +168,15 @@ private void GenerateEffectForBothHands(IList<NormalizedLandmarkList> targets)
     Vector3 rightHandPosition = GetHandCenter(targets[1]);
     Vector3 centerPosition = (leftHandPosition + rightHandPosition) / 2.0f; // 中央位置
 
+    // オフセットを適用
+    Vector3 finalPosition = centerPosition + _effectPositionOffset;
+
+    // Z軸を固定（例: Z = 0）
+    finalPosition.z = 0f; // 必要に応じて固定する値を変更
+
     // 特別なエフェクトを生成
     var specialEffect = Instantiate(_landmarkPrefab2); // 別のエフェクトにしたい場合は新しいPrefabを指定
-    specialEffect.transform.position = centerPosition; // 両手の中央位置に配置
+    specialEffect.transform.position = finalPosition; // オフセット適用後の位置に配置（Z軸固定）
     _generatedObjects.Add(specialEffect);
 }
 
@@ -157,14 +184,23 @@ private void GenerateEffectForBothHands(IList<NormalizedLandmarkList> targets)
 private Vector3 GetHandCenter(NormalizedLandmarkList landmarkList)
 {
     Vector3 center = Vector3.zero;
+
+    // 各ランドマークのワールド座標を計算してログに出力
     foreach (var landmark in landmarkList.Landmark)
     {
-        center += new Vector3(landmark.X, landmark.Y, landmark.Z);
+        Vector3 worldPosition = ConvertToWorldPosition(landmark);
+        Debug.Log($"Landmark world position: {worldPosition}");
+        center += worldPosition;
     }
+
     return center / landmarkList.Landmark.Count; // 平均値を取得
 }
 
-// エフェクトを手の位置に生成するメソッド
+private void Update() {
+  Debug.Log(_effectPlaying);
+}
+
+// エフェクトを手の位置に生成するメソッド（修正版）
 private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList)
 {
     if (_landmarkPrefab == null) return;
@@ -172,12 +208,52 @@ private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList)
     // 手の重心（平均位置）を計算
     Vector3 handPosition = GetHandCenter(landmarkList);
 
+    // Z軸を固定（例: Z = 0）
+    handPosition.z = -15f; // 必要に応じて固定する値を変更
+
+    // ワールド座標をログに出力
+    Debug.Log($"Generating effect at hand position: {handPosition}");
+
     // エフェクトを生成
     var effect = Instantiate(_landmarkPrefab);
-    effect.transform.position = handPosition; // 手の重心位置に配置
-    _generatedObjects.Add(effect); // 後で削除できるようリストに保存
+    effect.transform.position = handPosition; // 手の重心位置に配置（Z軸固定）
+
+    // エフェクトを3秒後に削除
+    Destroy(effect, 3f); // 3秒後に自動で削除
+
+    // リストに追加して追跡（オプション、不要であれば削除可）
+    _generatedObjects.Add(effect);
 }
 
+
+// エフェクト再生状態を追跡するコルーチン
+private IEnumerator TrackEffectStatus(GameObject effect)
+{
+    _effectPlaying = true;
+
+    // パーティクルシステムがある場合、それを監視
+    var particleSystem = effect.GetComponent<ParticleSystem>();
+    if (particleSystem != null)
+    {
+        while (particleSystem.isPlaying)
+        {
+            yield return null; // 再生中は待機
+            Debug.Log("これずっと出てる？");
+        }
+    }
+
+    // 再生が終了したらログを出力し、フラグをリセット
+    Debug.Log("Effect has finished playing.");
+    _effectPlaying = false;
+
+    // エフェクトを削除
+    if (effect != null)
+    {
+        Destroy(effect);
+    }
+
+    _currentEffect = null; // 参照をクリア
+}
 // 指先の距離を計算して「パー」か判定するメソッド
 private bool IsOpenHand(NormalizedLandmarkList landmarkList)
 {
@@ -225,8 +301,8 @@ private bool AreFingersSpread(NormalizedLandmarkList landmarkList)
     float ringToPinky = GetDistance(landmarkList.Landmark[16], landmarkList.Landmark[20]);
 
     return indexToMiddle > spreadThreshold &&
-           middleToRing > spreadThreshold &&
-           ringToPinky > spreadThreshold;
+          middleToRing > spreadThreshold &&
+          ringToPinky > spreadThreshold;
 }
 
 // 2点間の距離を計算するヘルパーメソッド
