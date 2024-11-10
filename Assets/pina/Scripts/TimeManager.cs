@@ -26,7 +26,6 @@ public class TimeManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             UpdateTimerText();
-            Debug.Log("Time Left: " + FormatTime(currentTime));
 
             if (currentTime <= 0)
             {
@@ -53,7 +52,7 @@ public class TimeManager : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(time / 60f);
         int seconds = Mathf.FloorToInt(time % 60f);
-        return string.Format("{0:0}:{1:00}", minutes, seconds);
+        return string.Format("Time: {0:0}:{1:00}", minutes, seconds);
     }
 }
 
