@@ -7,10 +7,12 @@ public class PunMain : MonoBehaviourPunCallbacks
     public string playerName{get;set;}
     public string enemyName{get;set;}
 
+    /*
     void Start()
     {
         ConentPUNServer();
     }
+    */
 
     #region Method
     [ContextMenu("StartPUN")]
