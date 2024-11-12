@@ -12,21 +12,27 @@ public class EnemyScript : MonoBehaviour
     private Transform centerPosition;
 
     [SerializeField]
-    private float moveDuration = 2f;
+    private float moveDuration = 5f;
 
     private void Start()
+{
+    if (centerPosition != null)
     {
-        if (centerPosition != null)
-        {
-            // DoTweenで敵を中心に向かって移動させます
-            transform.DOMove(centerPosition.position, moveDuration)
-                .SetEase(Ease.Linear); // 直線的な動き
-        }
-        else
-        {
-            Debug.LogError("Center position is not set.");
-        }
+        // 現在のZ座標を保持します
+        float fixedZ = transform.position.z;
+
+        // centerPositionのX, Y座標に固定したZ座標を設定
+        Vector3 targetPosition = new Vector3(centerPosition.position.x, centerPosition.position.y, fixedZ);
+
+        // DoTweenでZ座標を固定しながら移動させます
+        transform.DOMove(targetPosition, moveDuration)
+            .SetEase(Ease.Linear); // 直線的な動き
     }
+    else
+    {
+        Debug.LogError("Center position is not set.");
+    }
+}
 
 
 }
