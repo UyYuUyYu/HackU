@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class NameInputPUN : MonoBehaviourPunCallbacks
 {
     
-    [SerializeField] private Text inputFieldText;
+    [SerializeField] private Text inputFieldText,checkNameText,lastCheckNameText;
     public static string myName;
     // Start is called before the first frame update
     void Start()
@@ -29,6 +29,8 @@ public class NameInputPUN : MonoBehaviourPunCallbacks
     {
         print("入力完了");
         myName = inputFieldText.text;
+        checkNameText.text=myName;
+        lastCheckNameText.text=myName;
     }
 
  
