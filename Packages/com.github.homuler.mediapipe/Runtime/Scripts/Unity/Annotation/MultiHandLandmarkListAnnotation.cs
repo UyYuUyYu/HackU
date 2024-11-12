@@ -164,7 +164,7 @@ private Vector3 GetHandCenter(NormalizedLandmarkList landmarkList)
     foreach (var landmark in landmarkList.Landmark)
     {
         Vector3 worldPosition = ConvertToWorldPosition(landmark);
-        Debug.Log($"Landmark world position: {worldPosition}");
+
         center += worldPosition;
     }
 
@@ -184,9 +184,6 @@ private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList, G
 
     // Z軸を固定（例: Z = 0）
     handPosition.z = -4f; // 必要に応じて固定する値を変更
-
-    // ワールド座標をログに出力
-    Debug.Log($"Generating effect at hand position: {handPosition}");
 
     // エフェクトを生成
     var effect = Instantiate(prefab);

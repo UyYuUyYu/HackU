@@ -86,6 +86,7 @@ namespace Mediapipe.Unity.HandTracking.UI
       if (int.TryParse(_timeoutMillisecInput.text, out var value))
       {
         _solution.timeoutMillisec = value;
+        value += 150;
         _isChanged = true;
       }
     }
