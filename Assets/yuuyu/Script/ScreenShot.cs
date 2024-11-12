@@ -5,14 +5,12 @@ using UnityEngine.UI;
 
 public class ScreenShot : MonoBehaviour
 {
-    
-    [SerializeField] private Camera screenshotCamera; // キャプチャに使うカメラ
 
     [SerializeField] private RawImage displayImage; 
     public static byte[] imageData;
 
 
-
+    /*
     [ContextMenu("ViewSreanShot")]
     public void InportImage()
     {
@@ -30,8 +28,9 @@ public class ScreenShot : MonoBehaviour
         displayImage.texture = receivedTexture;
         displayImage.SetNativeSize(); // 受信した画像に合わせてサイズを調整
     }
+    */
 
-
+    //スクショを撮るmethod
     [ContextMenu("SS")]
     public void StartSS()
     {

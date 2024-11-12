@@ -7,12 +7,14 @@ public class PunMain : MonoBehaviourPunCallbacks
     public string playerName{get;set;}
     public string enemyName{get;set;}
 
-    /*
+    private MatchngDisplayScript matchngDisplayScript;
+
     void Start()
     {
+        matchngDisplayScript=this.GetComponent<MatchngDisplayScript>();
         ConentPUNServer();
     }
-    */
+    
 
     #region Method
     [ContextMenu("StartPUN")]
@@ -52,10 +54,30 @@ public class PunMain : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(null, roomOptions);
     }
 
-    // ゲームサーバーへの接続が成功した時に呼ばれるコールバック
+    // ルームへの参加が成功した時に呼ばれるコールバック
     public override void OnJoinedRoom() 
     {
+        print("room入った");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            print("Master");
+            matchngDisplayScript.InportImageAndName();
+        }
+        else
+        {
+            matchngDisplayScript.InportImageAndName();
+            matchngDisplayScript.SendFriendImageAndName();
+        }
             
+    }
+    // ルームに人が入ってきた時に呼ばれるコールバック
+    public override void OnPlayerEnteredRoom (Player newPlayer)
+    {
+        print("人が来た");
+        if(PhotonNetwork.IsMasterClient)
+        {
+            matchngDisplayScript.SendFriendImageAndName();
+        }
     }
 
     // Photonのサーバーから切断された時に呼ばれるコールバック

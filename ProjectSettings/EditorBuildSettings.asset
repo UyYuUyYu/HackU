@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/yuuyu/Scene/Input.unity
+    guid: 293b17f3a4b854f7eba7d0473d7d329f
+  - enabled: 1
+    path: Assets/yuuyu/Scene/MatchWait.unity
+    guid: 3f37623ac3b5d47e3866554d9cd54fa7
   m_configObjects: {}
