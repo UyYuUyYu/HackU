@@ -5,17 +5,20 @@ using UnityEngine.UI;
 
 public class ScreenShot : MonoBehaviour
 {
-    
-    [SerializeField] private Camera screenshotCamera; // キャプチャに使うカメラ
-
+    public InputPanelManager inputPanelManager;
     [SerializeField] private RawImage displayImage; 
     public static byte[] imageData;
 
+    void Start()
+    {
 
-
+    }
+    
     [ContextMenu("ViewSreanShot")]
     public void InportImage()
     {
+         //CheckPanel出す
+        inputPanelManager.LastCheck();
         ViewShot(ScreenShot.imageData);
         displayImage.gameObject.SetActive(true);
     }
@@ -30,8 +33,9 @@ public class ScreenShot : MonoBehaviour
         displayImage.texture = receivedTexture;
         displayImage.SetNativeSize(); // 受信した画像に合わせてサイズを調整
     }
+    
 
-
+    //スクショを撮るmethod
     [ContextMenu("SS")]
     public void StartSS()
     {
@@ -50,6 +54,8 @@ public class ScreenShot : MonoBehaviour
 
         imageData = resizedScreenshot.EncodeToPNG();
         Destroy(screenshot);
+        InportImage();
+       
     }
 
     private Texture2D ResizeTexture(Texture2D sourceTexture, int targetWidth, int targetHeight)
