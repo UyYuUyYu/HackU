@@ -16,7 +16,7 @@ public class MatchngDisplayScript : MonoBehaviourPun
     [ContextMenu("SendFriendImageAndName")]
     public void SendFriendImageAndName()
     {
-        photonView.RPC("RReceiveName", RpcTarget.Others, NameInputPUN.myName);
+        photonView.RPC("ReceiveName", RpcTarget.Others, NameInputPUN.myName);
         photonView.RPC("ReceiveScreenshot", RpcTarget.Others, ScreenShot.imageData);
         friendDisplayImage.gameObject.SetActive(true);
     
