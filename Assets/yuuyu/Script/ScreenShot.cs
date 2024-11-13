@@ -9,7 +9,7 @@ public class ScreenShot : MonoBehaviour
     [SerializeField] private RawImage displayImage; 
 
     [SerializeField] private Text coundDownText; 
-    [SerializeField] private GameObject setteiButton; 
+    [SerializeField] private GameObject imageUI,panelFram; 
 
     public static byte[] imageData;
 
@@ -26,6 +26,7 @@ public class ScreenShot : MonoBehaviour
         inputPanelManager.LastCheck();
         ViewShot(ScreenShot.imageData);
         displayImage.gameObject.SetActive(true);
+        panelFram.SetActive(true);
     }
 
     private void ViewShot(byte[] _imageData)
@@ -91,13 +92,14 @@ public class ScreenShot : MonoBehaviour
     {
         int i;
         coundDownText.gameObject.SetActive(true);
-        
 
         for(i=3;i>0;i--)
         {
             coundDownText.text=i.ToString();
             yield return new WaitForSeconds(1);
         }
+        panelFram.SetActive(false);
+        imageUI.SetActive(false);
         coundDownText.gameObject.SetActive(false);
         yield return StartCoroutine(SS());
 
