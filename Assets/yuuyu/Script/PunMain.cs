@@ -1,6 +1,9 @@
  using Photon.Pun;
  using Photon.Realtime;
  using UnityEngine;
+ using System.Collections;
+ using UnityEngine.SceneManagement;
+ using System;
 
 public class PunMain : MonoBehaviourPunCallbacks
 {
@@ -11,8 +14,13 @@ public class PunMain : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        matchngDisplayScript=this.GetComponent<MatchngDisplayScript>();
-        ConentPUNServer();
+
+        if(SceneManager.GetActiveScene().name=="input")
+        {
+            matchngDisplayScript=this.GetComponent<MatchngDisplayScript>();
+            ConentPUNServer();
+        } 
+        
     }
     
 
@@ -27,6 +35,15 @@ public class PunMain : MonoBehaviourPunCallbacks
     public void DisconectPUNServer()
     {
         PhotonNetwork.Disconnect(); 
+        print(ScreenShot.imageData);
+        Array.Clear(ScreenShot.imageData, 0, ScreenShot.imageData.Length);
+        NameInputPUN.myName="Player";
+        SceneManager.LoadScene("Start");
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("MatchWait");
     }
 
     public void SetNickName()
@@ -35,7 +52,7 @@ public class PunMain : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    
+  
     
     #region PUNCallBucks
     public override void OnConnectedToMaster() 
@@ -67,6 +84,7 @@ public class PunMain : MonoBehaviourPunCallbacks
         {
             matchngDisplayScript.InportImageAndName();
             matchngDisplayScript.SendFriendImageAndName();
+            StartCoroutine("WaitMainScene");
         }
             
     }
@@ -77,6 +95,7 @@ public class PunMain : MonoBehaviourPunCallbacks
         if(PhotonNetwork.IsMasterClient)
         {
             matchngDisplayScript.SendFriendImageAndName();
+            StartCoroutine("WaitMainScene");
         }
     }
 
@@ -88,5 +107,12 @@ public class PunMain : MonoBehaviourPunCallbacks
     #endregion
 
 
+    private IEnumerator WaitMainScene()
+    {
+        print("a");
+        yield return new WaitForSeconds(3);
+        SceneManager.LoadScene("Main");
+
+    }
     
 }
