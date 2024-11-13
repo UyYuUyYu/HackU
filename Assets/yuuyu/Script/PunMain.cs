@@ -37,12 +37,14 @@ public class PunMain : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect(); 
         print(ScreenShot.imageData);
         Array.Clear(ScreenShot.imageData, 0, ScreenShot.imageData.Length);
+        SendScorePUN.myScore=0;
         NameInputPUN.myName="Player";
         SceneManager.LoadScene("Start");
     }
 
     public void Restart()
     {
+        SendScorePUN.myScore=0;
         SceneManager.LoadScene("MatchWait");
     }
 
