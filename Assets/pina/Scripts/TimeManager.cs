@@ -13,8 +13,11 @@ public class TimeManager : MonoBehaviour
 
     private float currentTime;
 
+    private ScoreManager scoreManager;
+
     private void Start()
     {
+        scoreManager=this.GetComponent<ScoreManager>();
         currentTime = timeLimit;
         UpdateTimerText();
         Debug.Log("Time Left: " + FormatTime(currentTime));
@@ -37,7 +40,9 @@ public class TimeManager : MonoBehaviour
 
     private void TimeOut()
     {
+        SendScorePUN.myScore=scoreManager.GetScore();
         Debug.Log("Time's up!");
+
     }
 
     private void UpdateTimerText()
