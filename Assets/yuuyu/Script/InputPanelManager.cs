@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InputPanelManager : MonoBehaviour
 {
-    [SerializeField] private GameObject inputImagePanle,inputNamePanel,checkPanel,checkTextAndImagePanel;
+    [SerializeField] private GameObject inputImagePanle,inputNamePanel,checkPanel,checkTextAndImagePanel,imageUI;
 
     public void OK()
     {
@@ -16,6 +16,7 @@ public class InputPanelManager : MonoBehaviour
     {
         checkPanel.SetActive(false);
         checkTextAndImagePanel.SetActive(false);
+        imageUI.SetActive(true);
     }
 
     public void Kettei()

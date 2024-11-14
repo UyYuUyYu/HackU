@@ -9,7 +9,7 @@ public class ScreenShot : MonoBehaviour
     [SerializeField] private RawImage displayImage; 
 
     [SerializeField] private Text coundDownText; 
-    [SerializeField] private GameObject imageUI,panelFram; 
+    [SerializeField] private GameObject imageUI,panelFram,countDownPanel; 
 
     public static byte[] imageData;
 
@@ -37,6 +37,7 @@ public class ScreenShot : MonoBehaviour
         // RawImage UIに表示
         displayImage.texture = receivedTexture;
         displayImage.SetNativeSize(); // 受信した画像に合わせてサイズを調整
+
     }
     
 
@@ -44,6 +45,7 @@ public class ScreenShot : MonoBehaviour
     [ContextMenu("SS")]
     public void StartSS()
     {
+        countDownPanel.SetActive(true);
         StartCoroutine(WaitScreanShot());
         
     }
@@ -89,6 +91,8 @@ public class ScreenShot : MonoBehaviour
 
     private IEnumerator WaitScreanShot()
     {
+        
+        imageUI.SetActive(false);
         int i;
         coundDownText.gameObject.SetActive(true);
 
@@ -98,7 +102,7 @@ public class ScreenShot : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         panelFram.SetActive(false);
-        imageUI.SetActive(false);
+        countDownPanel.SetActive(true);
         coundDownText.gameObject.SetActive(false);
         yield return StartCoroutine(SS());
 
