@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void Die()
+    public void Die()
     {
         // 死亡時にオブジェクトを削除
         Destroy(gameObject);
