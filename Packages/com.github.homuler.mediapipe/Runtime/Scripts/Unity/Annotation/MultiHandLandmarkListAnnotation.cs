@@ -155,8 +155,8 @@ public void UpdateEffectByValue(int newValue, Vector3 handPosition)
 private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
 {
     Vector3 screenPosition = new Vector3(
-        landmark.X * Screen.width,
-        landmark.Y* Screen.height,
+        (1 - landmark.X) * Screen.width, // X座標を反転
+        landmark.Y* Screen.height, // Y座標も必要なら反転
         -4f // Z座標を固定
     );
 
