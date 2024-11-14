@@ -102,58 +102,69 @@ private void NotifyValueChanged()
 private int _currentValue = -1;
 
 // 数値に応じたエフェクトの切り替え
-public void UpdateEffectByValue(int newValue)
-{
-    // 数値が変更された場合のみ処理
-    if (_currentValue != newValue)
+public void UpdateEffectByValue(int newValue, Vector3 handPosition)
     {
-        Debug.Log($"Value changed: {_currentValue} -> {newValue}");
-        _currentValue = newValue;
-
-        // 現在のエフェクトを削除
-        if (_currentEffect != null)
+        if (_currentValue != newValue)
         {
-            Destroy(_currentEffect);
-            _currentEffect = null;
-        }
+            Debug.Log($"Value changed: {_currentValue} -> {newValue}");
+            _currentValue = newValue;
 
-        // 数値に応じたエフェクト生成
-        switch (_currentValue)
-        {
-            case 0:
-                Debug.Log("No effect activated.");
-                break;
-            case 1:
-                Debug.Log("Activating 'Open Hand' effect.");
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], new Vector3(0,0,-4));
-                break;
-            case 2:
-                Debug.Log("Activating 'V Sign' effect.");
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], new Vector3(0,0,-4));
-                break;
-            default:
-                Debug.Log($"Effect for value {_currentValue} is not implemented.");
-                break;
+            // 現在のエフェクトを削除
+            if (_currentEffect != null)
+            {
+                Destroy(_currentEffect);
+                _currentEffect = null;
+            }
+
+            // 数値に応じたエフェクト生成
+            switch (_currentValue)
+            {
+                case 0:
+                    Debug.Log("No effect activated.");
+                    break;
+                case 1:
+                    Debug.Log("Activating 'Open Hand' effect.");
+                    _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], handPosition);
+                    break;
+                case 2:
+                    Debug.Log("Activating 'V Sign' effect.");
+                    _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], handPosition);
+                    break;
+                default:
+                    Debug.Log($"Effect for value {_currentValue} is not implemented.");
+                    break;
+            }
         }
     }
-}
 
-// エフェクト生成ヘルパーメソッド
-private GameObject GenerateEffectAtPosition(GameObject prefab, Vector3 position)
+    // エフェクト生成ヘルパーメソッド
+    private GameObject GenerateEffectAtPosition(GameObject prefab, Vector3 position)
+    {
+        if (prefab == null) return null;
+
+        // Z座標を固定
+        position.z = -4f;
+
+        var effect = Instantiate(prefab);
+        effect.transform.position = position + _effectPositionOffset; // オフセットを適用
+        Destroy(effect, 3f); // 3秒後に自動削除
+        return effect;
+    }
+
+    // NormalizedLandmarkをワールド座標に変換// NormalizedLandmarkをワールド座標に変換
+private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
 {
-    if (prefab == null) return null;
-    position.z = -4f;
+    Vector3 screenPosition = new Vector3(
+        landmark.X * Screen.width,
+        landmark.Y* Screen.height,
+        -4f // Z座標を固定
+    );
 
-    var effect = Instantiate(prefab);
-    effect.transform.position = position + _effectPositionOffset; // オフセットを適用
-    Destroy(effect, 3f); // 3秒後に自動削除
-    return effect;
+    return Camera.main.ScreenToWorldPoint(screenPosition);
 }
 
-
-
-// Draw メソッドの修正版
-public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
+    // 指定の手の状態に基づくエフェクトの描画
+    public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
 {
     if (ActivateFor(targets))
     {
@@ -162,43 +173,32 @@ public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
         for (int i = 0; i < targets.Count; i++)
         {
             var landmarkList = targets[i];
+
+            // 手首または指先の位置を取得
+            Vector3 handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]); // 手首
+            Vector3 fingerTipPosition = ConvertToWorldPosition(landmarkList.Landmark[8]); // 人差し指先端
+
+            // 手の高さ（y座標）をエフェクト生成に反映
+            float adjustedY = handPosition.y + _effectPositionOffset.y;
+
+            // 動的にエフェクトの高さを調整
+            handPosition.y = adjustedY;
+
             if (IsOpenHand(landmarkList))
             {
-                UpdateEffectByValue(1); // パーの場合
+                UpdateEffectByValue(1, handPosition); // パーのエフェクトを生成
             }
             else if (IsVSignHand(landmarkList))
             {
-                UpdateEffectByValue(2); // チョキの場合
+                UpdateEffectByValue(2, handPosition); // チョキのエフェクトを生成
             }
             else
             {
-                UpdateEffectByValue(0); // 何も検出されない場合
+                UpdateEffectByValue(0, handPosition); // 無効なエフェクト
             }
         }
-
-        CallActionForAll(targets, (annotation, target) =>
-        {
-            if (annotation != null) { annotation.Draw(target, visualizeZ); }
-        });
     }
 }
-// NormalizedLandmarkをワールド座標に変換
-private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
-{
-    // 正規化された座標 (0~1) をスクリーン座標に変換
-    Vector3 screenPosition = new Vector3(
-        landmark.X * Screen.width,
-        (1 - landmark.Y) * Screen.height, // Y座標は上下逆のため反転
-        landmark.Z * 5.0f // 深度のスケール調整（適宜変更）
-    );
-
-    // スクリーン座標をワールド座標に変換
-    return Camera.main.ScreenToWorldPoint(screenPosition);
-}
-
-// エフェクトを手の位置に生成するメソッド(やる)
-
-
 // エフェクト再生状態を追跡するコルーチン
 private IEnumerator TrackEffectStatus(GameObject effect)
 {
@@ -211,7 +211,7 @@ private IEnumerator TrackEffectStatus(GameObject effect)
         while (particleSystem.isPlaying)
         {
             yield return null; // 再生中は待機
-            Debug.Log("これずっと出てる？");
+
         }
     }
 
