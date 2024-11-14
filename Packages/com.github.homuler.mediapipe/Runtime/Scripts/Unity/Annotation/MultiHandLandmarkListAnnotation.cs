@@ -196,63 +196,7 @@ private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
     return Camera.main.ScreenToWorldPoint(screenPosition);
 }
 
-// 両手が近いかどうかを判定するメソッド
-private bool AreHandsTogether(IList<NormalizedLandmarkList> targets)
-{
-    if (targets.Count < 2) return false;
-
-    // 両手の重心を計算
-    Vector3 leftHandPosition = GetHandCenter(targets[0]);
-    Vector3 rightHandPosition = GetHandCenter(targets[1]);
-
-    // 両手の距離を計算
-    const float handsTogetherThreshold = 0.2f; // 距離の閾値（適宜調整）
-    float distance = Vector3.Distance(leftHandPosition, rightHandPosition);
-
-    return distance < handsTogetherThreshold;
-}
-
-
-// 手の重心を計算するメソッド
-private Vector3 GetHandCenter(NormalizedLandmarkList landmarkList)
-{
-    Vector3 center = Vector3.zero;
-
-    // 各ランドマークのワールド座標を計算してログに出力
-    foreach (var landmark in landmarkList.Landmark)
-    {
-        Vector3 worldPosition = ConvertToWorldPosition(landmark);
-
-        center += worldPosition;
-    }
-
-    return center / landmarkList.Landmark.Count; // 平均値を取得
-}
-
-
-
-// // エフェクトを手の位置に生成するメソッド（修正版）
-// // エフェクトを生成するメソッド（Prefabを指定可能）
-// private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList, GameObject prefab)
-// {
-//     if (prefab == null) return;
-
-//     // 手の重心（平均位置）を計算
-//     Vector3 handPosition = GetHandCenter(landmarkList);
-
-//     // Z軸を固定（例: Z = 0）
-//     handPosition.z = -4f; // 必要に応じて固定する値を変更
-
-//     // エフェクトを生成
-//     var effect = Instantiate(prefab);
-//     effect.transform.position = handPosition; // 手の重心位置に配置（Z軸固定）
-
-//     // エフェクトを3秒後に削除
-//     Destroy(effect, 3f); // 3秒後に自動で削除
-
-//     // リストに追加して追跡（オプション、不要であれば削除可）
-//     _generatedObjects.Add(effect);
-// }
+// エフェクトを手の位置に生成するメソッド(やる)
 
 
 // エフェクト再生状態を追跡するコルーチン
