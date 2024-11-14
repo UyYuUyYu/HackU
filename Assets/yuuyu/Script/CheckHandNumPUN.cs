@@ -20,9 +20,12 @@ public class CheckHandNumPUN : MonoBehaviourPun
                isBigEffect=false;
           }
      }
+
+
      //相手に自分の手の番号を伝える
-     public void SendNumber()
+     public void SendNumber(int _hundNum)
      {
+          myHundNum=_hundNum;
           photonView.RPC("SendHundNum", RpcTarget.Others, myHundNum);
      }
 
