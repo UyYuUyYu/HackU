@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -25,6 +27,8 @@ public class PlayerHealth : MonoBehaviour
         if (currentHP < 0) currentHP = 0;
         UpdateHPText();
         Debug.Log("Player HP after Damage: " + currentHP);
+
+        Camera.main.transform.DOShakePosition(1f,0.5f);
     }
 
     public void Heal(int amount)
