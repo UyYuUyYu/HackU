@@ -222,93 +222,84 @@ namespace Mediapipe.Unity
         }
 
         // 指定の手の状態に基づくエフェクトの描画
-        public void UpdateEffectByValue(
-            int newValue,
-            Vector3 handPosition,
-            Vector3? secondaryPosition = null
-        )
+        public void UpdateEffectByValue(int newValue, Vector3 handPosition, Vector3? secondaryPosition = null, NormalizedLandmarkList landmarkList = null)
+{
+    if (isCooldownActive)
+    {
+        Debug.Log("Effect is on cooldown. Ignoring input.");
+        return; // クールダウン中は何もしない
+    }
+
+    if (_currentValue != newValue)
+    {
+        _currentValue = newValue;
+
+        // 現在のエフェクトを削除
+        if (_currentEffect != null)
         {
-            if (isCooldownActive)
+            Destroy(_currentEffect);
+            _currentEffect = null;
+        }
+
+        // エフェクト生成位置を決定
+        Vector3 effectPosition = handPosition;
+        if (secondaryPosition.HasValue)
+        {
+            effectPosition = Vector3.Lerp(handPosition, secondaryPosition.Value, 0.5f);
+        }
+
+        // 銃魔法の場合、方向に基づいて位置を調整
+        if (newValue == 5 && landmarkList != null) // 銃魔法に対応
+        {
+            Vector3 direction = CalculateIndexFingerDirection(landmarkList); // 人差し指の方向を取得
+
+            float offset = 0.2f; // X座標のずらし量
+            if (direction.x > 0.1f) // 人差し指が右向きの場合
             {
-                Debug.Log("Effect is on cooldown. Ignoring input.");
-                return; // クールダウン中は何もしない
+                effectPosition.x += offset;
+                Debug.Log("人差し指が右向き。エフェクトを右にずらします。");
             }
-
-            if (_currentValue != newValue)
+            else if (direction.x < -0.1f) // 人差し指が左向きの場合
             {
-                // Debug.Log($"Value changed: {_currentValue} -> {newValue}");
-                _currentValue = newValue;
-
-                // 現在のエフェクトを削除
-                if (_currentEffect != null)
-                {
-                    Destroy(_currentEffect);
-                    _currentEffect = null;
-                }
-
-                // エフェクト生成位置を決定
-                Vector3 effectPosition = handPosition;
-                if (secondaryPosition.HasValue)
-                {
-                    effectPosition = Vector3.Lerp(handPosition, secondaryPosition.Value, 0.5f);
-                }
-
-                // 数値に応じたエフェクト生成と効果音再生
-                switch (_currentValue)
-                {
-                    case 0:
-                        // Debug.Log("No effect activated.");
-                        break;
-                    case 1:
-                        // Debug.Log("Activating 'Open Hand' effect.");
-                        _currentEffect = GenerateEffectAtPosition(
-                            _landmarkPrefabs[0],
-                            effectPosition
-                        );
-                        PlayEffectSound(0); // 効果音を再生
-                        break;
-                    case 2:
-                        // Debug.Log("Activating 'V Sign' effect.");
-                        _currentEffect = GenerateEffectAtPosition(
-                            _landmarkPrefabs[1],
-                            effectPosition
-                        );
-                        PlayEffectSound(1);
-                        break;
-                    case 3:
-                        // Debug.Log("Activating 'Fist' effect.");
-                        _currentEffect = GenerateEffectAtPosition(
-                            _landmarkPrefabs[2],
-                            effectPosition
-                        );
-                        PlayEffectSound(2);
-                        break;
-                    case 4:
-                        // Debug.Log("Activating 'Heart Pose' effect.");
-                        _currentEffect = GenerateEffectAtPosition(
-                            _landmarkPrefabs[3],
-                            effectPosition
-                        );
-                        PlayEffectSound(3);
-                        break;
-                    case 5:
-                        // Debug.Log("Activating 'X Pose' effect.");
-                        _currentEffect = GenerateEffectAtPosition(
-                            _landmarkPrefabs[4],
-                            effectPosition
-                        ); // 配列の5番目のエフェクト
-                        PlayEffectSound(4); // 対応する効果音
-                        break;
-
-                    default:
-                        // Debug.Log($"Effect for value {_currentValue} is not implemented.");
-                        break;
-                }
-
-                // クールダウンを開始
-                StartCooldown();
+                effectPosition.x -= offset;
+                Debug.Log("人差し指が左向き。エフェクトを左にずらします。");
             }
         }
+
+        // 数値に応じたエフェクト生成と効果音再生
+        switch (_currentValue)
+        {
+            case 0:
+                break;
+            case 1:
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], effectPosition);
+                PlayEffectSound(0);
+                break;
+            case 2:
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], effectPosition);
+                PlayEffectSound(1);
+                break;
+            case 3:
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[2], effectPosition);
+                PlayEffectSound(2);
+                break;
+            case 4:
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[3], effectPosition);
+                PlayEffectSound(3);
+                break;
+            case 5:
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[4], effectPosition);
+                PlayEffectSound(4);
+                break;
+            default:
+                Debug.Log($"Effect for value {_currentValue} is not implemented.");
+                break;
+        }
+
+        // クールダウンを開始
+        StartCooldown();
+    }
+}
 
         // 銃のポーズを判定するメソッド
         private bool IsGunPose(NormalizedLandmarkList landmarkList)
