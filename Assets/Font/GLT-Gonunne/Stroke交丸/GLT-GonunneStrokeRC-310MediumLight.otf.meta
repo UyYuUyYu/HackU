@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 88cad3533b4e14661b813c237f5803ff
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - GLT-GonunneStrokeRC
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 16dfa07f563584dd9ac31910fe03a989, type: 3}
+  - {fileID: 12800000, guid: 8313f2f6e00c641b7a49ecf31e2cd292, type: 3}
+  - {fileID: 12800000, guid: 52e23d2b9bae94cec97f70eb1a0fc6e3, type: 3}
+  - {fileID: 12800000, guid: e53118cf5076f43d591e5e2bb6e9c6b1, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
