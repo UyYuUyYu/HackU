@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/yuuyu/Scene/Main.unity
     guid: f525202bdbd4e400f8294640fef9e4a4
+  - enabled: 1
+    path: Assets/Scenes/Maintest_inobee.unity
+    guid: a5b3a6f6540c34a208f29e7ab4292d86
   m_configObjects: {}
