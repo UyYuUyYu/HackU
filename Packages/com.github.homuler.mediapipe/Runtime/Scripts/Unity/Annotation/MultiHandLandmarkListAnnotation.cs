@@ -26,7 +26,7 @@ namespace Mediapipe.Unity
         private float _connectionWidth = 1.0f;
 
         [SerializeField]
-        private float cooldownDuration = 2.0f; // クールダウンの時間（秒）
+        private float cooldownDuration = 0.0f; // クールダウンの時間（秒）
 
         private bool isCooldownActive = false; // クールダウン中かどうかを管理
         private float cooldownTimer = 0.0f; // クールダウンの残り時間
@@ -70,7 +70,7 @@ namespace Mediapipe.Unity
                 {
                     isCooldownActive = false; // クールダウンを終了
                     cooldownTimer = 0.0f; // タイマーをリセット
-                    Debug.Log("Cooldown ended.");
+                    // Debug.Log("Cooldown ended.");
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Mediapipe.Unity
             }
             else
             {
-                Debug.LogWarning($"Invalid sound index: {soundIndex}");
+                // Debug.LogWarning($"Invalid sound index: {soundIndex}");
             }
         }
 
@@ -173,7 +173,7 @@ namespace Mediapipe.Unity
                         Vector3 rightHandPosition = ConvertToWorldPosition(rightHand.Landmark[0]);
 
                         UpdateEffectByValue(4, leftHandPosition, rightHandPosition);
-                        Debug.Log("Heart pose detected.");
+                        // Debug.Log("Heart pose detected.");
                         return;
                     }
 
@@ -206,11 +206,11 @@ namespace Mediapipe.Unity
                         {
                             handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]);
                             UpdateEffectByValue(5, handPosition); // 上向きのエフェクト
-                            Debug.Log("銃ポーズ + 上向きが検出されました。エフェクトを再生します。");
+                            // Debug.Log("銃ポーズ + 上向きが検出されました。エフェクトを再生します。");
                         }
                         else
                         {
-                            Debug.Log("銃ポーズ検出。上向き条件が満たされていません。");
+                            // Debug.Log("銃ポーズ検出。上向き条件が満たされていません。");
                         }
                     }
                     else
@@ -226,7 +226,7 @@ namespace Mediapipe.Unity
 {
     if (isCooldownActive)
     {
-        Debug.Log("Effect is on cooldown. Ignoring input.");
+        // Debug.Log("Effect is on cooldown. Ignoring input.");
         return; // クールダウン中は何もしない
     }
 
@@ -257,12 +257,12 @@ namespace Mediapipe.Unity
             if (direction.x > 0.1f) // 人差し指が右向きの場合
             {
                 effectPosition.x += offset;
-                Debug.Log("人差し指が右向き。エフェクトを右にずらします。");
+
             }
             else if (direction.x < -0.1f) // 人差し指が左向きの場合
             {
                 effectPosition.x -= offset;
-                Debug.Log("人差し指が左向き。エフェクトを左にずらします。");
+
             }
         }
 
@@ -306,7 +306,7 @@ namespace Mediapipe.Unity
         {
             if (landmarkList == null || landmarkList.Landmark.Count < 21)
             {
-                Debug.Log("ランドマークが不足しています。");
+                // Debug.Log("ランドマークが不足しています。");
                 return false; // ランドマークが不足している場合は判定しない
             }
 
@@ -768,7 +768,6 @@ namespace Mediapipe.Unity
             // 動作条件を緩める：少しでも上向き（y > 0.3）
             bool isUpward = direction.y > 0.565f; // 条件を緩めた
 
-            Debug.Log($"人差し指の方向: {direction}, 上向き: {isUpward}");
             return isUpward;
         }
 

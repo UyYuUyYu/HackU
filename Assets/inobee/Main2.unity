@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff3bc842fd2c4c9bbaa319c245571d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 100
   enemyRenderer: {fileID: 0}
 --- !u!65 &343654435
 BoxCollider:
@@ -1259,7 +1259,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff3bc842fd2c4c9bbaa319c245571d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 100
   enemyRenderer: {fileID: 0}
 --- !u!65 &703142786
 BoxCollider:
@@ -2419,7 +2419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff3bc842fd2c4c9bbaa319c245571d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 3
+  hp: 100
   enemyRenderer: {fileID: 0}
 --- !u!65 &1239639606
 BoxCollider:
