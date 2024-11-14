@@ -47,6 +47,8 @@ namespace Mediapipe.Unity
         [SerializeField]
         private UnityEngine.Events.UnityEvent<int> OnValueChanged;
 
+        
+
         // 数値変更時にイベントを発火
         private void NotifyValueChanged()
         {
@@ -223,6 +225,7 @@ namespace Mediapipe.Unity
 
         // 指定の手の状態に基づくエフェクトの描画
         public void UpdateEffectByValue(int newValue, Vector3 handPosition, Vector3? secondaryPosition = null, NormalizedLandmarkList landmarkList = null)
+
 {
     if (isCooldownActive)
     {
@@ -230,28 +233,76 @@ namespace Mediapipe.Unity
         return; // クールダウン中は何もしない
     }
 
-    if (_currentValue != newValue)
-    {
-        _currentValue = newValue;
 
-        // 現在のエフェクトを削除
-        if (_currentEffect != null)
-        {
-            Destroy(_currentEffect);
-            _currentEffect = null;
-        }
+            if (_currentValue != newValue)
+            {
+                _currentValue = newValue;
 
-        // エフェクト生成位置を決定
-        Vector3 effectPosition = handPosition;
-        if (secondaryPosition.HasValue)
-        {
-            effectPosition = Vector3.Lerp(handPosition, secondaryPosition.Value, 0.5f);
-        }
+                // 現在のエフェクトを削除
+                if (_currentEffect != null)
+                {
+                    Destroy(_currentEffect);
+                    _currentEffect = null;
+                }
 
-        // 銃魔法の場合、方向に基づいて位置を調整
-        if (newValue == 5 && landmarkList != null) // 銃魔法に対応
-        {
-            Vector3 direction = CalculateIndexFingerDirection(landmarkList); // 人差し指の方向を取得
+                // エフェクト生成位置を決定
+                Vector3 effectPosition = handPosition;
+                if (secondaryPosition.HasValue)
+                {
+                    effectPosition = Vector3.Lerp(handPosition, secondaryPosition.Value, 0.5f);
+                }
+
+                // 銃魔法の場合、方向に基づいて位置を調整
+                if (newValue == 5 && landmarkList != null) // 銃魔法に対応
+                {
+                    Vector3 direction = CalculateIndexFingerDirection(landmarkList); // 人差し指の方向を取得
+
+
+                    float offset = 0.2f; // X座標のずらし量
+                    if (direction.x > 0.1f) // 人差し指が右向きの場合
+                    {
+                        effectPosition.x += offset;
+                        Debug.Log("人差し指が右向き。エフェクトを右にずらします。");
+                    }
+                    else if (direction.x < -0.1f) // 人差し指が左向きの場合
+                    {
+                        effectPosition.x -= offset;
+                        Debug.Log("人差し指が左向き。エフェクトを左にずらします。");
+                    }
+                }
+
+                // 数値に応じたエフェクト生成と効果音再生
+                switch (_currentValue)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], effectPosition);
+                        PlayEffectSound(0);
+                        break;
+                    case 2:
+                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], effectPosition);
+                        PlayEffectSound(1);
+                        break;
+                    case 3:
+                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[2], effectPosition);
+                        PlayEffectSound(2);
+                        break;
+                    case 4:
+                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[3], effectPosition);
+                        PlayEffectSound(3);
+                        break;
+                    case 5:
+                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[4], effectPosition);
+                        PlayEffectSound(4);
+                        break;
+                    default:
+                        Debug.Log($"Effect for value {_currentValue} is not implemented.");
+                        break;
+                }
+
+                // クールダウンを開始
+                StartCooldown();
 
             float offset = 0.2f; // X座標のずらし量
             if (direction.x > 0.1f) // 人差し指が右向きの場合
@@ -263,43 +314,9 @@ namespace Mediapipe.Unity
             {
                 effectPosition.x -= offset;
 
+
             }
         }
-
-        // 数値に応じたエフェクト生成と効果音再生
-        switch (_currentValue)
-        {
-            case 0:
-                break;
-            case 1:
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], effectPosition);
-                PlayEffectSound(0);
-                break;
-            case 2:
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], effectPosition);
-                PlayEffectSound(1);
-                break;
-            case 3:
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[2], effectPosition);
-                PlayEffectSound(2);
-                break;
-            case 4:
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[3], effectPosition);
-                PlayEffectSound(3);
-                break;
-            case 5:
-                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[4], effectPosition);
-                PlayEffectSound(4);
-                break;
-            default:
-                Debug.Log($"Effect for value {_currentValue} is not implemented.");
-                break;
-        }
-
-        // クールダウンを開始
-        StartCooldown();
-    }
-}
 
         // 銃のポーズを判定するメソッド
         private bool IsGunPose(NormalizedLandmarkList landmarkList)
