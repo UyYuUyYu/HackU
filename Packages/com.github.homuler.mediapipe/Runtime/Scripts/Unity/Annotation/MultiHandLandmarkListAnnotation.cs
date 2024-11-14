@@ -102,40 +102,209 @@ private void NotifyValueChanged()
 private int _currentValue = -1;
 
 // 数値に応じたエフェクトの切り替え
-public void UpdateEffectByValue(int newValue, Vector3 handPosition)
+public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
+{
+    if (ActivateFor(targets))
     {
-        if (_currentValue != newValue)
-        {
-            Debug.Log($"Value changed: {_currentValue} -> {newValue}");
-            _currentValue = newValue;
+        ClearGeneratedObjects();
 
-            // 現在のエフェクトを削除
-            if (_currentEffect != null)
+        // 両手を使うポーズの場合の処理
+        if (targets.Count >= 2)
+        {
+            Debug.Log("Two hands detected. Checking for two-hand poses.");
+
+            var leftHand = targets[0];
+            var rightHand = targets[1];
+
+            // ハートポーズの判定
+            if (IsHeartPose(leftHand, rightHand))
             {
-                Destroy(_currentEffect);
-                _currentEffect = null;
+                Vector3 leftHandPosition = ConvertToWorldPosition(leftHand.Landmark[0]);
+                Vector3 rightHandPosition = ConvertToWorldPosition(rightHand.Landmark[0]);
+
+                // 両手の中間点をエフェクト生成位置に渡す
+                UpdateEffectByValue(4, leftHandPosition, rightHandPosition);
+                Debug.Log("Heart pose detected. Skipping single-hand magic.");
+                return; // 両手のポーズが優先されるため、片手のポーズを判定しない
             }
 
-            // 数値に応じたエフェクト生成
-            switch (_currentValue)
+            // 両手が認識されているがハートポーズではない場合も、片手の魔法をスキップ
+            Debug.Log("Two hands detected but no valid two-hand pose. Skipping single-hand magic.");
+            return;
+        }
+
+        // 片手ポーズの判定
+        for (int i = 0; i < targets.Count; i++)
+        {
+            var landmarkList = targets[i];
+
+            // 手首または指先の位置を取得
+            Vector3 handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]); // 手首
+
+            if (IsOpenHand(landmarkList))
             {
-                case 0:
-                    Debug.Log("No effect activated.");
-                    break;
-                case 1:
-                    Debug.Log("Activating 'Open Hand' effect.");
-                    _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], handPosition);
-                    break;
-                case 2:
-                    Debug.Log("Activating 'V Sign' effect.");
-                    _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], handPosition);
-                    break;
-                default:
-                    Debug.Log($"Effect for value {_currentValue} is not implemented.");
-                    break;
+                UpdateEffectByValue(1, handPosition); // パーのエフェクトを生成
+            }
+            else if (IsVSignHand(landmarkList))
+            {
+                UpdateEffectByValue(2, handPosition); // チョキのエフェクトを生成
+            }
+            else if (IsFistHand(landmarkList))
+            {
+                UpdateEffectByValue(3, handPosition); // グーのエフェクトを生成
+            }
+            else
+            {
+                UpdateEffectByValue(0, handPosition); // 無効なエフェクト
             }
         }
     }
+}
+
+// 指定の手の状態に基づくエフェクトの描画
+public void UpdateEffectByValue(int newValue, Vector3 handPosition, Vector3? secondaryPosition = null)
+{
+    if (_currentValue != newValue)
+    {
+        Debug.Log($"Value changed: {_currentValue} -> {newValue}");
+        _currentValue = newValue;
+
+        // 現在のエフェクトを削除
+        if (_currentEffect != null)
+        {
+            Destroy(_currentEffect);
+            _currentEffect = null;
+        }
+
+        // エフェクト生成位置を決定
+        Vector3 effectPosition = handPosition;
+        if (secondaryPosition.HasValue)
+        {
+            // 両手の間の中間点を計算
+            effectPosition = Vector3.Lerp(handPosition, secondaryPosition.Value, 0.5f);
+        }
+
+        // 数値に応じたエフェクト生成
+        switch (_currentValue)
+        {
+            case 0:
+                Debug.Log("No effect activated.");
+                break;
+            case 1:
+                Debug.Log("Activating 'Open Hand' effect.");
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], effectPosition);
+                break;
+            case 2:
+                Debug.Log("Activating 'V Sign' effect.");
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], effectPosition);
+                break;
+            case 3:
+                Debug.Log("Activating 'Fist' effect.");
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[2], effectPosition);
+                break;
+            case 4:
+                Debug.Log("Activating 'Heart Pose' effect.");
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[3], effectPosition);
+                break;
+            default:
+                Debug.Log($"Effect for value {_currentValue} is not implemented.");
+                break;
+        }
+    }
+}
+
+
+private bool IsHeartPose(NormalizedLandmarkList leftHand, NormalizedLandmarkList rightHand)
+{
+    if (leftHand == null || rightHand == null ||
+        leftHand.Landmark.Count < 21 || rightHand.Landmark.Count < 21)
+    {
+        return false; // 両手のランドマークが不足している場合は無効
+    }
+
+    // ランドマークのインデックス
+    int thumbTip = 4;   // 親指先端
+    int pinkyTip = 20;  // 小指先端
+    int indexTip = 8;   // 人差し指先端
+    int middleTip = 12; // 中指先端
+    int ringTip = 16;   // 薬指先端
+
+    // 親指と小指のランドマークを取得
+    Vector3 leftThumb = ConvertToWorldPosition(leftHand.Landmark[thumbTip]);
+    Vector3 rightThumb = ConvertToWorldPosition(rightHand.Landmark[thumbTip]);
+    Vector3 leftPinky = ConvertToWorldPosition(leftHand.Landmark[pinkyTip]);
+    Vector3 rightPinky = ConvertToWorldPosition(rightHand.Landmark[pinkyTip]);
+
+    // 親指がそれ以外の指から十分離れているか判定
+    float leftThumbToIndexDistance = Vector3.Distance(leftThumb, ConvertToWorldPosition(leftHand.Landmark[indexTip]));
+    float leftThumbToMiddleDistance = Vector3.Distance(leftThumb, ConvertToWorldPosition(leftHand.Landmark[middleTip]));
+    float leftThumbToRingDistance = Vector3.Distance(leftThumb, ConvertToWorldPosition(leftHand.Landmark[ringTip]));
+    float rightThumbToIndexDistance = Vector3.Distance(rightThumb, ConvertToWorldPosition(rightHand.Landmark[indexTip]));
+    float rightThumbToMiddleDistance = Vector3.Distance(rightThumb, ConvertToWorldPosition(rightHand.Landmark[middleTip]));
+    float rightThumbToRingDistance = Vector3.Distance(rightThumb, ConvertToWorldPosition(rightHand.Landmark[ringTip]));
+
+    const float minThumbDistance = 0.1f; // 親指と他の指の最小距離（近すぎる場合は誤認識とみなす）
+
+    bool isLeftThumbSeparated = leftThumbToIndexDistance > minThumbDistance &&
+                                leftThumbToMiddleDistance > minThumbDistance &&
+                                leftThumbToRingDistance > minThumbDistance;
+    bool isRightThumbSeparated = rightThumbToIndexDistance > minThumbDistance &&
+                                 rightThumbToMiddleDistance > minThumbDistance &&
+                                 rightThumbToRingDistance > minThumbDistance;
+
+    // 親指と小指の距離条件
+    float thumbToThumbDistance = Vector3.Distance(leftThumb, rightThumb);
+    const float thumbFarThreshold = 0.7f; // 親指同士の距離の最小閾値（かなり離れている必要がある）
+
+    float pinkyToPinkyDistance = Vector3.Distance(leftPinky, rightPinky);
+    const float pinkyFarThreshold = 0.7f; // 小指同士の距離の最小閾値（かなり離れている必要がある）
+
+    // 親指が小指より下にあるか判定
+    bool isThumbBelowPinky = leftThumb.y < leftPinky.y && rightThumb.y < rightPinky.y;
+
+    // 両手が離れているか判定
+    float leftToRightDistance = Vector3.Distance(ConvertToWorldPosition(leftHand.Landmark[0]), ConvertToWorldPosition(rightHand.Landmark[0]));
+    const float minHandDistance = 0.8f; // 両手間の最小距離（離れていることを要求）
+
+    // 条件をすべて満たしているかを判定
+    return thumbToThumbDistance > thumbFarThreshold &&  // 親指がかなり離れている
+           pinkyToPinkyDistance > pinkyFarThreshold &&  // 小指がかなり離れている
+           isThumbBelowPinky &&
+           leftToRightDistance > minHandDistance &&
+           isLeftThumbSeparated &&
+           isRightThumbSeparated; // 親指が他の指と離れていることを確認
+}
+
+// グーを判定するメソッド
+private bool IsFistHand(NormalizedLandmarkList landmarkList)
+{
+    if (landmarkList == null || landmarkList.Landmark.Count < 21)
+    {
+        return false; // ランドマークが不足している場合は「グー」ではない
+    }
+
+    // 各指先と手首の距離を計算
+    int wrist = 0;
+    int indexTip = 8;
+    int middleTip = 12;
+    int ringTip = 16;
+    int pinkyTip = 20;
+    int thumbTip = 4;
+
+    float wristToIndex = GetDistance(landmarkList.Landmark[wrist], landmarkList.Landmark[indexTip]);
+    float wristToMiddle = GetDistance(landmarkList.Landmark[wrist], landmarkList.Landmark[middleTip]);
+    float wristToRing = GetDistance(landmarkList.Landmark[wrist], landmarkList.Landmark[ringTip]);
+    float wristToPinky = GetDistance(landmarkList.Landmark[wrist], landmarkList.Landmark[pinkyTip]);
+    float wristToThumb = GetDistance(landmarkList.Landmark[wrist], landmarkList.Landmark[thumbTip]);
+
+    const float fistThreshold = 0.3f; // 指先が手首に十分近い距離
+
+    return wristToIndex < fistThreshold &&
+           wristToMiddle < fistThreshold &&
+           wristToRing < fistThreshold &&
+           wristToPinky < fistThreshold &&
+           wristToThumb < fistThreshold;
+}
 
     // エフェクト生成ヘルパーメソッド
     private GameObject GenerateEffectAtPosition(GameObject prefab, Vector3 position)
@@ -163,42 +332,8 @@ private Vector3 ConvertToWorldPosition(NormalizedLandmark landmark)
     return Camera.main.ScreenToWorldPoint(screenPosition);
 }
 
-    // 指定の手の状態に基づくエフェクトの描画
-    public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
-{
-    if (ActivateFor(targets))
-    {
-        ClearGeneratedObjects();
 
-        for (int i = 0; i < targets.Count; i++)
-        {
-            var landmarkList = targets[i];
 
-            // 手首または指先の位置を取得
-            Vector3 handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]); // 手首
-            Vector3 fingerTipPosition = ConvertToWorldPosition(landmarkList.Landmark[8]); // 人差し指先端
-
-            // 手の高さ（y座標）をエフェクト生成に反映
-            float adjustedY = handPosition.y + _effectPositionOffset.y;
-
-            // 動的にエフェクトの高さを調整
-            handPosition.y = adjustedY;
-
-            if (IsOpenHand(landmarkList))
-            {
-                UpdateEffectByValue(1, handPosition); // パーのエフェクトを生成
-            }
-            else if (IsVSignHand(landmarkList))
-            {
-                UpdateEffectByValue(2, handPosition); // チョキのエフェクトを生成
-            }
-            else
-            {
-                UpdateEffectByValue(0, handPosition); // 無効なエフェクト
-            }
-        }
-    }
-}
 // エフェクト再生状態を追跡するコルーチン
 private IEnumerator TrackEffectStatus(GameObject effect)
 {
