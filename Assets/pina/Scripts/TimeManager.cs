@@ -18,6 +18,8 @@ public class TimeManager : MonoBehaviour
     
     [SerializeField] private SendScorePUN sendScorePUN;
 
+    [SerializeField] private GameObject timeUpText;
+
     private void Start()
     {
         scoreManager=this.GetComponent<ScoreManager>();
@@ -43,6 +45,7 @@ public class TimeManager : MonoBehaviour
 
     private void TimeOut()
     {
+        timeUpText.SetActive(true);
         SendScorePUN.myScore=scoreManager.GetScore();
         
         SceneManager.LoadScene("Rusult");
