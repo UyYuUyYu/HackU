@@ -2692,6 +2692,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 300
   timerText: {fileID: 1227877955}
+  sendScorePUN: {fileID: 0}
+  timeUpText: {fileID: 0}
 --- !u!114 &1899073136
 MonoBehaviour:
   m_ObjectHideFlags: 0
