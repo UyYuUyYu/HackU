@@ -394,6 +394,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8829451551789304542, guid: 244b1cc8940bd0844a05812855fbe45d, type: 3}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: CooldownDuration
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefab2
       value: 
       objectReference: {fileID: 1255053967005034563, guid: 982b091f07779d846ad915e29a06ddc8, type: 3}
@@ -402,25 +406,57 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8829451551789304542, guid: 8206b722d11501a449d6a278cca2adfa, type: 3}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: cooldownDuration
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _effectSounds.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _effectSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: c4626d0afff6f4f1b8888050e3f49d65, type: 3}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _effectSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 935a84853c55645fc832550e1de89033, type: 3}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _effectSounds.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7b3619fb81487428daed20f0869a686b, type: 3}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _effectSounds.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: cd20a924a89e64f309a98c547d6371a1, type: 3}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _effectSounds.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0f4c764784f064f0f81e0f647819715b, type: 3}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefabs.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 1205478487176026167, guid: 8436419d5cd706242bb810378b8a8835, type: 3}
+      objectReference: {fileID: 3600389243222657682, guid: 3fee2e03e4bdc854bb38f7bcbca7c75d, type: 3}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 3600389243222657682, guid: 3fee2e03e4bdc854bb38f7bcbca7c75d, type: 3}
+      objectReference: {fileID: 100004, guid: a538c26b827a66e45a17c1f359fbd88b, type: 3}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefabs.Array.data[2]
       value: 
-      objectReference: {fileID: 100004, guid: a538c26b827a66e45a17c1f359fbd88b, type: 3}
+      objectReference: {fileID: 9017484664307500583, guid: 1245b8d2997d5b34fb1637be70a7eb05, type: 3}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefabs.Array.data[3]
       value: 
-      objectReference: {fileID: 100004, guid: a538c26b827a66e45a17c1f359fbd88b, type: 3}
+      objectReference: {fileID: 100006, guid: 91c2dabd84467a34486dced8e6d947d8, type: 3}
+    - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
+      propertyPath: _landmarkPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 1205478487176026167, guid: 8436419d5cd706242bb810378b8a8835, type: 3}
     - target: {fileID: 7434967355688441420, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: m_Name
       value: HandLandmarks Annotation
