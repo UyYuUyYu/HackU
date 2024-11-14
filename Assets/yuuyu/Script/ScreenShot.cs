@@ -7,6 +7,10 @@ public class ScreenShot : MonoBehaviour
 {
     public InputPanelManager inputPanelManager;
     [SerializeField] private RawImage displayImage; 
+
+    [SerializeField] private Text coundDownText; 
+    [SerializeField] private GameObject imageUI,panelFram; 
+
     public static byte[] imageData;
 
     void Start()
@@ -21,6 +25,7 @@ public class ScreenShot : MonoBehaviour
         inputPanelManager.LastCheck();
         ViewShot(ScreenShot.imageData);
         displayImage.gameObject.SetActive(true);
+        panelFram.SetActive(true);
     }
 
     private void ViewShot(byte[] _imageData)
@@ -39,7 +44,8 @@ public class ScreenShot : MonoBehaviour
     [ContextMenu("SS")]
     public void StartSS()
     {
-        StartCoroutine(SS());
+        StartCoroutine(WaitScreanShot());
+        
     }
     private IEnumerator SS()
     {
@@ -79,5 +85,22 @@ public class ScreenShot : MonoBehaviour
         resizedTexture.SetPixels(newPixels);
         resizedTexture.Apply();
         return resizedTexture;
+    }
+
+    private IEnumerator WaitScreanShot()
+    {
+        int i;
+        coundDownText.gameObject.SetActive(true);
+
+        for(i=3;i>0;i--)
+        {
+            coundDownText.text=i.ToString();
+            yield return new WaitForSeconds(1);
+        }
+        panelFram.SetActive(false);
+        imageUI.SetActive(false);
+        coundDownText.gameObject.SetActive(false);
+        yield return StartCoroutine(SS());
+
     }
 }

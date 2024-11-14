@@ -15,7 +15,7 @@ public class PunMain : MonoBehaviourPunCallbacks
     void Start()
     {
 
-        if(SceneManager.GetActiveScene().name=="input")
+        if(SceneManager.GetActiveScene().name=="MatchWait")
         {
             matchngDisplayScript=this.GetComponent<MatchngDisplayScript>();
             ConentPUNServer();

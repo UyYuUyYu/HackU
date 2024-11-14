@@ -8,10 +8,9 @@ public class InputPanelManager : MonoBehaviour
 
     public void OK()
     {
-        inputImagePanle.SetActive(true);
         checkPanel.SetActive(false);
         inputNamePanel.SetActive(false);
-
+        inputImagePanle.SetActive(true);
     }
     public void Cansel()
     {
