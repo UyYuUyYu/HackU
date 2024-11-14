@@ -102,7 +102,7 @@ public class ScreenShot : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         panelFram.SetActive(false);
-        countDownPanel.SetActive(true);
+        countDownPanel.SetActive(false);
         coundDownText.gameObject.SetActive(false);
         yield return StartCoroutine(SS());
 
