@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: c8f4e1b3378064481a1cd3b50523836c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - GLT-GonunneStrokeRI
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a8f3193241d594ea38a70b39445761fe, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

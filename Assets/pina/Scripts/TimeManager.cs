@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TimeManager : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class TimeManager : MonoBehaviour
     private float currentTime;
 
     private ScoreManager scoreManager;
+    
+    [SerializeField] private SendScorePUN sendScorePUN;
+
+    [SerializeField] private GameObject timeUpText;
 
     private void Start()
     {
@@ -40,7 +45,10 @@ public class TimeManager : MonoBehaviour
 
     private void TimeOut()
     {
+        timeUpText.SetActive(true);
         SendScorePUN.myScore=scoreManager.GetScore();
+        
+        SceneManager.LoadScene("Rusult");
         Debug.Log("Time's up!");
 
     }

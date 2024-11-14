@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/inobee/MediaPipeUnity/Samples/Scenes/Start Scene.unity
+    guid: f7b359c19e6ae2d208e5ca4608b7c0b8
+  - enabled: 1
     path: Assets/yuuyu/Scene/Start.unity
     guid: a8c3ff53f05e0485195106747b6a8d28
   - enabled: 1

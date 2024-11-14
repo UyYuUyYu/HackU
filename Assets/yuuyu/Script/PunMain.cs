@@ -8,7 +8,7 @@
 public class PunMain : MonoBehaviourPunCallbacks
 {
     public string playerName{get;set;}
-    public string enemyName{get;set;}
+    public string friendName{get;set;}
 
     private MatchngDisplayScript matchngDisplayScript;
 
