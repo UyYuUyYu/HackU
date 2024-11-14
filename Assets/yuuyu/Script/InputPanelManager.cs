@@ -11,8 +11,6 @@ public class InputPanelManager : MonoBehaviour
         checkPanel.SetActive(false);
         inputNamePanel.SetActive(false);
         inputImagePanle.SetActive(true);
-       
-
     }
     public void Cansel()
     {

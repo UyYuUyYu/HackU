@@ -21,7 +21,6 @@ public class ScreenShot : MonoBehaviour
     [ContextMenu("ViewSreanShot")]
     public void InportImage()
     {
-        
          //CheckPanel出す
         inputPanelManager.LastCheck();
         ViewShot(ScreenShot.imageData);
