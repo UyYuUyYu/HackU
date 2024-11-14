@@ -27,6 +27,13 @@ namespace Mediapipe.Unity
     private GameObject _currentEffect = null; // 現在のエフェクトを保持
     private bool _effectPlaying = false; // エフェクトの再生状態を追跡
     public bool IsEffectPlaying => _effectPlaying;
+    [SerializeField] private UnityEngine.Events.UnityEvent<int> OnValueChanged;
+
+// 数値変更時にイベントを発火
+private void NotifyValueChanged()
+{
+    OnValueChanged?.Invoke(_currentValue);
+}
 
 
     private List<GameObject> _generatedObjects = new List<GameObject>(); // 生成したオブジェクトのリスト
@@ -91,7 +98,57 @@ namespace Mediapipe.Unity
       }
     }
 
+// エフェクト管理用の数値
+private int _currentValue = -1;
 
+// 数値に応じたエフェクトの切り替え
+public void UpdateEffectByValue(int newValue)
+{
+    // 数値が変更された場合のみ処理
+    if (_currentValue != newValue)
+    {
+        Debug.Log($"Value changed: {_currentValue} -> {newValue}");
+        _currentValue = newValue;
+
+        // 現在のエフェクトを削除
+        if (_currentEffect != null)
+        {
+            Destroy(_currentEffect);
+            _currentEffect = null;
+        }
+
+        // 数値に応じたエフェクト生成
+        switch (_currentValue)
+        {
+            case 0:
+                Debug.Log("No effect activated.");
+                break;
+            case 1:
+                Debug.Log("Activating 'Open Hand' effect.");
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], new Vector3(0,0,-4));
+                break;
+            case 2:
+                Debug.Log("Activating 'V Sign' effect.");
+                _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], new Vector3(0,0,-4));
+                break;
+            default:
+                Debug.Log($"Effect for value {_currentValue} is not implemented.");
+                break;
+        }
+    }
+}
+
+// エフェクト生成ヘルパーメソッド
+private GameObject GenerateEffectAtPosition(GameObject prefab, Vector3 position)
+{
+    if (prefab == null) return null;
+    position.z = -4f;
+
+    var effect = Instantiate(prefab);
+    effect.transform.position = position + _effectPositionOffset; // オフセットを適用
+    Destroy(effect, 3f); // 3秒後に自動削除
+    return effect;
+}
 
 
 
@@ -100,21 +157,22 @@ public void Draw(IList<NormalizedLandmarkList> targets, bool visualizeZ = false)
 {
     if (ActivateFor(targets))
     {
-        ClearGeneratedObjects(); // 前回生成したオブジェクトを削除
+        ClearGeneratedObjects();
 
         for (int i = 0; i < targets.Count; i++)
         {
             var landmarkList = targets[i];
-
-            if (IsOpenHand(landmarkList)) // 「パー」の時にエフェクトを生成
+            if (IsOpenHand(landmarkList))
             {
-                Debug.Log($"Hand {i}: Open hand detected");
-                GenerateEffectAtHandPosition(landmarkList, _landmarkPrefabs[0]); // パー用エフェクト生成
+                UpdateEffectByValue(1); // パーの場合
             }
-            else if (IsVSignHand(landmarkList)) // 「チョキ」の時に別のエフェクトを生成
+            else if (IsVSignHand(landmarkList))
             {
-                Debug.Log($"Hand {i}: V-sign hand detected");
-                GenerateEffectAtHandPosition(landmarkList, _landmarkPrefabs[1]); // チョキ用エフェクト生成
+                UpdateEffectByValue(2); // チョキの場合
+            }
+            else
+            {
+                UpdateEffectByValue(0); // 何も検出されない場合
             }
         }
 
@@ -173,28 +231,28 @@ private Vector3 GetHandCenter(NormalizedLandmarkList landmarkList)
 
 
 
-// エフェクトを手の位置に生成するメソッド（修正版）
-// エフェクトを生成するメソッド（Prefabを指定可能）
-private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList, GameObject prefab)
-{
-    if (prefab == null) return;
+// // エフェクトを手の位置に生成するメソッド（修正版）
+// // エフェクトを生成するメソッド（Prefabを指定可能）
+// private void GenerateEffectAtHandPosition(NormalizedLandmarkList landmarkList, GameObject prefab)
+// {
+//     if (prefab == null) return;
 
-    // 手の重心（平均位置）を計算
-    Vector3 handPosition = GetHandCenter(landmarkList);
+//     // 手の重心（平均位置）を計算
+//     Vector3 handPosition = GetHandCenter(landmarkList);
 
-    // Z軸を固定（例: Z = 0）
-    handPosition.z = -4f; // 必要に応じて固定する値を変更
+//     // Z軸を固定（例: Z = 0）
+//     handPosition.z = -4f; // 必要に応じて固定する値を変更
 
-    // エフェクトを生成
-    var effect = Instantiate(prefab);
-    effect.transform.position = handPosition; // 手の重心位置に配置（Z軸固定）
+//     // エフェクトを生成
+//     var effect = Instantiate(prefab);
+//     effect.transform.position = handPosition; // 手の重心位置に配置（Z軸固定）
 
-    // エフェクトを3秒後に削除
-    Destroy(effect, 3f); // 3秒後に自動で削除
+//     // エフェクトを3秒後に削除
+//     Destroy(effect, 3f); // 3秒後に自動で削除
 
-    // リストに追加して追跡（オプション、不要であれば削除可）
-    _generatedObjects.Add(effect);
-}
+//     // リストに追加して追跡（オプション、不要であれば削除可）
+//     _generatedObjects.Add(effect);
+// }
 
 
 // エフェクト再生状態を追跡するコルーチン

@@ -3859,12 +3859,13 @@ ParticleSystem:
     enabled: 1
     serializedVersion: 2
     inside: 1
-    outside: 0
+    outside: 1
     enter: 0
     exit: 0
     colliderQueryMode: 0
     radiusScale: 1
-    primitives: []
+    primitives:
+    - {fileID: 0}
   SubModule:
     serializedVersion: 2
     enabled: 0
@@ -4811,7 +4812,7 @@ ParticleSystemRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3600389243222657682}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -4900,7 +4901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
-  delayBeforeCollision: 12
+  delayBeforeCollision: 0
 --- !u!1 &4936908092126958425
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,17 +4,43 @@ using UnityEngine;
 
 public class FireCollision : MonoBehaviour
 {
-    private void OnParticleCollision(GameObject other)
-    {
-        // タグで判定
-        if (!other.CompareTag("Enemy")) return;
-        Debug.Log("hit");
+    private ParticleSystem particleSystem;
+    private List<ParticleSystem.Particle> insideParticles = new List<ParticleSystem.Particle>();
 
-        // 事前にEnemyコンポーネントを取得
-        var enemyScript = other.GetComponent<Enemy>();
-        if (enemyScript != null)
+    private void Start()
+    {
+        particleSystem = GetComponent<ParticleSystem>();
+    }
+
+    private void OnParticleTrigger()
+    {
+        // トリガーされたパーティクルを取得
+        int numInside = particleSystem.GetTriggerParticles(ParticleSystemTriggerEventType.Inside, insideParticles);
+
+        for (int i = 0; i < numInside; i++)
         {
-            enemyScript.ReduceHp(3); // 必要最小限の処理を呼び出す
+            // パーティクルのコライダーを取得
+            ParticleSystem.Particle particle = insideParticles[i];
+            Collider[] colliders = Physics.OverlapSphere(particle.position, 0.1f);
+
+            foreach (var collider in colliders)
+            {
+                // タグで判定
+                if (collider.CompareTag("Enemy"))
+                {
+                    Debug.Log("hit");
+
+                    // Enemyスクリプトを取得してHPを減らす
+                    var enemyScript = collider.GetComponent<Enemy>();
+                    if (enemyScript != null)
+                    {
+                        enemyScript.ReduceHp(3);
+                    }
+                }
+            }
         }
+
+        // 更新されたパーティクルを反映
+        particleSystem.SetTriggerParticles(ParticleSystemTriggerEventType.Inside, insideParticles);
     }
 }
