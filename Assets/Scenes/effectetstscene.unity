@@ -123,6 +123,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &550819656
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 100006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_Name
+      value: Kunai6
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_RootOrder
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400006, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a837874212f62b8428ecacdbd58d341d, type: 3}
 --- !u!1 &666809348
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &666809352
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -318,6 +376,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &691724271
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -629,6 +688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &1001435598
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -759,6 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &1141570347
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -889,6 +950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &1280324868
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1019,6 +1081,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &1504775018
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1243,6 +1306,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &1708068142
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1373,6 +1437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &1988459405
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1503,6 +1568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 30
   enemyRenderer: {fileID: 0}
+  enemyPoint: 0
 --- !u!23 &2016262963
 MeshRenderer:
   m_ObjectHideFlags: 0
