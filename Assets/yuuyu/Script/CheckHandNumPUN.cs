@@ -7,29 +7,8 @@ using UnityEngine.UI;
 public class CheckHandNumPUN : MonoBehaviourPun
 {
      public int myHundNum,friendHundNum;
-     public bool isMatch=false;
 
      [SerializeField] private GameObject matchEffect;
-
-     void Update()
-     {
-          if(myHundNum==friendHundNum)
-          {
-               isMatch=true;
-          }
-          else
-          {
-               isMatch=false;
-          }
-
-          if(isMatch)
-          {
-               matchEffect.SetActive(true);
-               isMatch=false;
-          }
-
-     }
-
 
      //相手に自分の手の番号を伝える
      public void SendNumber(int _hundNum)
@@ -39,11 +18,16 @@ public class CheckHandNumPUN : MonoBehaviourPun
      }
 
      [PunRPC]
-     private void SendHundNum(int _myHundNum)
+     private void SendHundNum(int _friendNum)
      {
-          friendHundNum=_myHundNum;
-          print(myHundNum);
-          print(friendHundNum);
+          friendHundNum=_friendNum;
+          if(myHundNum==friendHundNum)
+          {
+               print("マッチしたよ");
+          }
+          
+          print("自分の"+myHundNum);
+          print("相手の"+friendHundNum);
      }
 
     
