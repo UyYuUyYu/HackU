@@ -9,7 +9,12 @@ public class CheckHandNumPUN : MonoBehaviourPun
      public int myHundNum,friendHundNum;
 
      [SerializeField] private GameObject matchEffect;
+     private ScoreManager scoreManager;
 
+     void Start()
+     {
+          scoreManager=GameObject.Find("GameManager").GetComponent<ScoreManager>();
+     }
      //相手に自分の手の番号を伝える
      public void SendNumber(int _hundNum)
      {
@@ -24,6 +29,7 @@ public class CheckHandNumPUN : MonoBehaviourPun
           if(myHundNum==friendHundNum)
           {
                print("マッチしたよ");
+               scoreManager.ScoreUp(2);
                Instantiate(matchEffect,new Vector3(0,-5,0),Quaternion.identity);
           }
           

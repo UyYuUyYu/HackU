@@ -148,13 +148,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35266533}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.47327363, y: 0.69121313, z: 0.69121313}
+  m_LocalScale: {x: 0.47327366, y: 0.6912132, z: 0.6912132}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1206994569}
-  m_RootOrder: 2
+  m_Father: {fileID: 1312445208}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -938,13 +938,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 908011640}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.47327363, y: 0.69121313, z: 0.69121313}
+  m_LocalScale: {x: 0.47327366, y: 0.6912132, z: 0.6912132}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1206994569}
-  m_RootOrder: 4
+  m_Father: {fileID: 1312445208}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1014,13 +1014,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1002563674}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.47327363, y: 0.69121313, z: 0.69121313}
+  m_LocalScale: {x: 0.47327366, y: 0.6912132, z: 0.6912132}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1206994569}
-  m_RootOrder: 3
+  m_Father: {fileID: 1312445208}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1174,10 +1174,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1312445208}
-  - {fileID: 1326631977}
-  - {fileID: 35266534}
-  - {fileID: 1002563675}
-  - {fileID: 908011641}
   m_Father: {fileID: 855846021}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1215,7 +1211,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1326631977}
+  - {fileID: 35266534}
+  - {fileID: 1002563675}
+  - {fileID: 908011641}
   m_Father: {fileID: 1206994569}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1287,13 +1287,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1326631976}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.47327363, y: 0.69121313, z: 0.69121313}
+  m_LocalScale: {x: 0.47327366, y: 0.6912132, z: 0.6912132}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1206994569}
-  m_RootOrder: 1
+  m_Father: {fileID: 1312445208}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1664,6 +1664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556529997}
   - component: {fileID: 1556529996}
+  - component: {fileID: 1556529998}
   m_Layer: 0
   m_Name: ResultManager
   m_TagString: Untagged
@@ -1684,8 +1685,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   row: 0
-  hight: 0
-  mid: 0
+  hight: 20
+  mid: 10
   rankS: {fileID: 1326631976}
   rankA: {fileID: 35266533}
   rankB: {fileID: 1002563674}
@@ -1709,6 +1710,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1556529998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556529995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 382735a389a724dd2a08ebbb90de7ea0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText1: {fileID: 1526673346}
+  scoreText2: {fileID: 2000789028}
+  rankImage: {fileID: 1312445209}
+  finalScore1: 20
+  finalScore2: 15
+  scoreCountDuration: 2
+  rankEffectDuration: 1
+  glowColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &1691689281
 GameObject:
   m_ObjectHideFlags: 0
