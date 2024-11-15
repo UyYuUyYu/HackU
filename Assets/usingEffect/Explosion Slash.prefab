@@ -9876,6 +9876,7 @@ GameObject:
   - component: {fileID: -4383273879560981180}
   - component: {fileID: 8690031787496874809}
   - component: {fileID: 6784172470122515435}
+  - component: {fileID: 1247909035450375343}
   m_Layer: 0
   m_Name: Explosion Slash
   m_TagString: Untagged
@@ -14764,6 +14765,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0597e2fe6cd184a239690d4520352a0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1247909035450375343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205478487176026167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48728c61159934428bbd3e6edf18738d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectNum: 3
 --- !u!1 &1950598122307970857
 GameObject:
   m_ObjectHideFlags: 0

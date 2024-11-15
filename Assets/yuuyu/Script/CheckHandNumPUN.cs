@@ -7,24 +7,34 @@ using UnityEngine.UI;
 public class CheckHandNumPUN : MonoBehaviourPun
 {
      public int myHundNum,friendHundNum;
-     public bool isBigEffect=false;
+     public bool isMatch=false;
+
+     [SerializeField] private GameObject matchEffect;
 
      void Update()
      {
           if(myHundNum==friendHundNum)
           {
-               isBigEffect=true;
+               isMatch=true;
           }
           else
           {
-               isBigEffect=false;
+               isMatch=false;
           }
+
+          if(isMatch)
+          {
+               matchEffect.SetActive(true);
+               isMatch=false;
+          }
+
      }
 
 
      //相手に自分の手の番号を伝える
      public void SendNumber(int _hundNum)
      {
+          print("SendNumInput");
           myHundNum=_hundNum;
           photonView.RPC("SendHundNum", RpcTarget.Others, myHundNum);
      }
