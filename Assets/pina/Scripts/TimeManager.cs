@@ -94,11 +94,10 @@ public class TimeManager : MonoBehaviour
     private void TimeOut()
     {
         currentPhase = Phase.Completed;
-
+        Debug.Log("Time's up!");
         timeUpText.SetActive(true);
         SendScorePUN.myScore=scoreManager.GetScore();
-        Debug.Log("Time's up!");
-
+        
         SceneManager.LoadScene("Result");
 
     }
