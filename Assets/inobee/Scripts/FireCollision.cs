@@ -10,6 +10,8 @@ public class FireCollision : MonoBehaviour
         if (!other.CompareTag("Enemy")) return;
         Debug.Log("hit");
 
+        
+
         // 事前にEnemyコンポーネントを取得
         var enemyScript = other.GetComponent<Enemy>();
         if (enemyScript != null)
