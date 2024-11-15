@@ -15,8 +15,7 @@ public class EnemyMovementScript : MonoBehaviour
         Tank
     }
 
-    [SerializeField]
-    private Transform centerPosition;
+    public Transform centerPosition;
 
 
     [SerializeField]
@@ -152,6 +151,9 @@ public class EnemyMovementScript : MonoBehaviour
     {
         Vector3 targetPosition = new Vector3(centerPosition.position.x, centerPosition.position.y, transform.position.z);
         Vector3 oneThirdPosition = (transform.position + targetPosition) * 2 / 3;
+
+        transform.LookAt(targetPosition);
+
 
         transform.DOMove(oneThirdPosition, moveDuration * 2 / 3).SetEase(Ease.Linear)
              .OnComplete(() => 

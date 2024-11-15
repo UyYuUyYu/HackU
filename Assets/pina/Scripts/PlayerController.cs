@@ -19,7 +19,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other) 
+    {
+        if(other.gameObject.CompareTag("Enemy"))
+        {
+            playerHealth.Damage(1);
+            other.gameObject.GetComponent<Enemy>().Die();
+        }
         if(other.gameObject.CompareTag("Ball"))
         {
             playerHealth.Damage(1);
