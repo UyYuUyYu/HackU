@@ -10,7 +10,6 @@ public class EffectNumSenderer : MonoBehaviour
     {
         checkHandNumPUN=GameObject.Find("PunManager").GetComponent<CheckHandNumPUN>();
         checkHandNumPUN.SendNumber(effectNum);
-        print("effectAwake");
     }
 
   

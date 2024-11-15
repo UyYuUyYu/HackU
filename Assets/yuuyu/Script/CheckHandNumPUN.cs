@@ -34,7 +34,6 @@ public class CheckHandNumPUN : MonoBehaviourPun
      //相手に自分の手の番号を伝える
      public void SendNumber(int _hundNum)
      {
-          print("SendNumInput");
           myHundNum=_hundNum;
           photonView.RPC("SendHundNum", RpcTarget.Others, myHundNum);
      }
@@ -43,6 +42,8 @@ public class CheckHandNumPUN : MonoBehaviourPun
      private void SendHundNum(int _myHundNum)
      {
           friendHundNum=_myHundNum;
+          print(myHundNum);
+          print(friendHundNum);
      }
 
     
