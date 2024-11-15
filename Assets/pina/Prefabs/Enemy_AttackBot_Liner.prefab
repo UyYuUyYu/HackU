@@ -531,6 +531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hp: 4
   enemyRenderer: {fileID: 0}
+  enemyPoint: 1
 --- !u!114 &2962935237613993524
 MonoBehaviour:
   m_ObjectHideFlags: 0
