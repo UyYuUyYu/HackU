@@ -38,6 +38,7 @@ public class PunMain : MonoBehaviourPunCallbacks
         print(ScreenShot.imageData);
         Array.Clear(ScreenShot.imageData, 0, ScreenShot.imageData.Length);
         SendScorePUN.myScore=0;
+        SendScorePUN.friendScore=0;
         NameInputPUN.myName="Player";
         SceneManager.LoadScene("Start");
     }
@@ -45,6 +46,7 @@ public class PunMain : MonoBehaviourPunCallbacks
     public void Restart()
     {
         SendScorePUN.myScore=0;
+        SendScorePUN.friendScore=0;
         SceneManager.LoadScene("MatchWait");
     }
 
