@@ -284,16 +284,16 @@ namespace Mediapipe.Unity
             if (landmarkList == null || landmarkList.Landmark.Count < 21)
             {
                 Debug.LogWarning("ランドマークデータが不足しています。");
-                return false; // ランドマークが不足している場合は判定しない
+                return false;
             }
 
             // ランドマークのインデックス
             int wrist = 0;
             int indexTip = 8;
+            int thumbTip = 4;
             int middleTip = 12;
             int ringTip = 16;
             int pinkyTip = 20;
-            int thumbTip = 4;
 
             // 手首から各指先までの距離を計算
             float wristToIndex = GetDistance(
@@ -317,13 +317,13 @@ namespace Mediapipe.Unity
                 landmarkList.Landmark[pinkyTip]
             );
 
-            // 条件: 親指と人差し指が伸びている & 他の指が折りたたまれている
-            bool isThumbExtended = wristToThumb > wristToMiddle;
-            bool isIndexExtended = wristToIndex > wristToMiddle;
+            // 条件: 親指と人差し指が「伸びている」 & 他の指が「比較的短い」
+            bool isThumbExtended = wristToThumb > wristToMiddle * 1.2f; // 親指は中指より長い
+            bool isIndexExtended = wristToIndex > wristToMiddle * 1.5f; // 人差し指も中指より長い
             bool isOtherFingersFolded =
-                wristToMiddle < wristToIndex
-                && wristToRing < wristToIndex
-                && wristToPinky < wristToIndex;
+                wristToMiddle < wristToIndex * 0.8f
+                && wristToRing < wristToIndex * 0.8f
+                && wristToPinky < wristToIndex * 0.8f; // 他の指が比較的短い
 
             // 銃のポーズを判定
             return isThumbExtended && isIndexExtended && isOtherFingersFolded;

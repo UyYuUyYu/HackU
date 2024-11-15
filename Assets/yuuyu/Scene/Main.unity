@@ -2303,7 +2303,7 @@ PrefabInstance:
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _effectSounds.Array.data[4]
       value: 
-      objectReference: {fileID: 8300000, guid: f64756e83151d4a11b1c17e4fd0b258f, type: 3}
+      objectReference: {fileID: 8300000, guid: 622952da5060c4182b8f263d26ffe6d2, type: 3}
     - target: {fileID: -8837774153085666347, guid: 87a9be2a7620991a78342ef9a56fa62c, type: 3}
       propertyPath: _landmarkPrefabs.Array.size
       value: 5
