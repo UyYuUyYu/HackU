@@ -220,7 +220,7 @@ public class TimeManager : MonoBehaviour
     public void SpawnBossEnemy()
     {
         // 敵をランダムに選択し、位置を取得して生成
-        GameObject enemyPrefab = Boss;
+        GameObject enemyPrefab = boss;
         enemyPrefab.gameObject.GetComponent<EnemyMovementScript>().centerPosition = this.centerPosition;
         Vector3 spawnPosition = GetSpawnPosition();
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
