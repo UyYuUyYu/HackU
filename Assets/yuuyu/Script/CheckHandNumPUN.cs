@@ -24,6 +24,7 @@ public class CheckHandNumPUN : MonoBehaviourPun
           if(myHundNum==friendHundNum)
           {
                print("マッチしたよ");
+               Instantiate(matchEffect,new Vector3(0,-5,0),Quaternion.identity);
           }
           
           print("自分の"+myHundNum);
