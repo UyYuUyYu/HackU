@@ -47,7 +47,7 @@ namespace Mediapipe.Unity
         [SerializeField]
         private UnityEngine.Events.UnityEvent<int> OnValueChanged;
 
-        
+
 
         // 数値変更時にイベントを発火
         private void NotifyValueChanged()
@@ -226,12 +226,12 @@ namespace Mediapipe.Unity
         // 指定の手の状態に基づくエフェクトの描画
         public void UpdateEffectByValue(int newValue, Vector3 handPosition, Vector3? secondaryPosition = null, NormalizedLandmarkList landmarkList = null)
 
-{
-    if (isCooldownActive)
-    {
-        // Debug.Log("Effect is on cooldown. Ignoring input.");
-        return; // クールダウン中は何もしない
-    }
+        {
+            if (isCooldownActive)
+            {
+                // Debug.Log("Effect is on cooldown. Ignoring input.");
+                return; // クールダウン中は何もしない
+            }
 
 
             if (_currentValue != newValue)
@@ -303,18 +303,6 @@ namespace Mediapipe.Unity
 
                 // クールダウンを開始
                 StartCooldown();
-
-            float offset = 0.2f; // X座標のずらし量
-            if (direction.x > 0.1f) // 人差し指が右向きの場合
-            {
-                effectPosition.x += offset;
-
-            }
-            else if (direction.x < -0.1f) // 人差し指が左向きの場合
-            {
-                effectPosition.x -= offset;
-
-
             }
         }
 
