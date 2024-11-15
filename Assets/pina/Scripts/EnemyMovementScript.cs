@@ -12,7 +12,9 @@ public class EnemyMovementScript : MonoBehaviour
         InQuad,
         InExpo,
         AttackBot,
-        Tank
+        Tank,
+
+        BossEnemy,
     }
 
     public Transform centerPosition;
@@ -57,6 +59,9 @@ public class EnemyMovementScript : MonoBehaviour
                 break;
             case EnemyMovementType.Tank:
                 MoveTank();
+                break;
+            case EnemyMovementType.BossEnemy:
+                MoveBossEnemy();
                 break;
         }
     }
@@ -141,7 +146,60 @@ public class EnemyMovementScript : MonoBehaviour
     }
 
 
+private void MoveBossEnemy()
+{
+    Vector3 targetPosition = new Vector3(centerPosition.position.x, centerPosition.position.y, transform.position.z);
 
+    Vector3 direction = targetPosition - transform.position;
+
+    // 最初の動き (①) を実行
+    transform.DOMove(new Vector3(8, 0, 0), 2f).OnComplete(() =>
+    {
+        // DOTweenのシーケンスを作成
+        Sequence movementSequence = DOTween.Sequence();
+
+        // ② DORotateをしてから6秒待機
+        movementSequence.Append(transform.DORotate(Quaternion.LookRotation(direction).eulerAngles, 2)
+              .SetEase(Ease.Linear))
+                        .AppendInterval(6f);
+
+        // 点滅処理
+        movementSequence.AppendCallback(() =>
+        {
+            arrowPrefab.SetActive(true); // 矢印を有効にする
+            arrowPrefab.GetComponent<Renderer>().material.DOColor(Color.clear, 0.2f)
+                .SetLoops(10, LoopType.Yoyo) // 5回の点滅（10ループでYoyo）
+                .OnComplete(() => arrowPrefab.SetActive(false)); // 点滅終了後に矢印を非表示
+        });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
+
+
+        // ③ 座標を (-8, 0, 0) に移動
+        movementSequence.Append(transform.DOMove(new Vector3(-8, 0, 0), 1f).SetEase(Ease.InQuad));
+
+        // ④ DORotateをしてから6秒待機
+        movementSequence.Append(transform.DORotate(Quaternion.LookRotation(-direction).eulerAngles, 2)
+              .SetEase(Ease.Linear))
+                        .AppendInterval(6f);
+
+        // 点滅処理
+        movementSequence.AppendCallback(() =>
+        {
+            arrowPrefab.SetActive(true); // 矢印を再び有効にする
+            arrowPrefab.GetComponent<Renderer>().material.DOColor(Color.clear, 0.2f)
+                .SetLoops(10, LoopType.Yoyo)
+                .OnComplete(() => arrowPrefab.SetActive(false)); // 点滅終了後に矢印を非表示
+        });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
+
+
+        // ⑤ 座標を (8, 0, 0) に移動
+        movementSequence.Append(transform.DOMove(new Vector3(8, 0, 0), 1f).SetEase(Ease.InQuad));
+
+        // シーケンスをループさせる (②から繰り返す)
+        movementSequence.SetLoops(-1); // -1は無限ループ
+    });
+}
 
 
 

@@ -31,5 +31,9 @@ public class PlayerController : MonoBehaviour
             playerHealth.Damage(1);
             Destroy(other.gameObject);
         }
+        if(other.gameObject.CompareTag("Boss"))
+        {
+            playerHealth.Damage(1);
+        }
     }
 }
