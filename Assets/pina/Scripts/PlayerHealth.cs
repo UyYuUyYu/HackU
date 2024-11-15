@@ -26,7 +26,6 @@ public class PlayerHealth : MonoBehaviour
         currentHP -= amount;
         if (currentHP < 0) currentHP = 0;
         UpdateHPText();
-        Debug.Log("Player HP after Damage: " + currentHP);
 
         Camera.main.transform.DOShakePosition(1f,0.5f);
     }
