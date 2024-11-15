@@ -106,6 +106,7 @@ public class TimeManager : MonoBehaviour
         timeUpText.SetActive(true);
         print("自分の点数"+scoreManager.GetScore());
         sendScorePUN.SendScore(scoreManager.GetScore());
+        SceneManager.LoadScene("Result");
 
     }
 

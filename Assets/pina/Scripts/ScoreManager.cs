@@ -36,6 +36,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreText != null)
         {
+            SendScorePUN.myScore=score;
             scoreText.text = "Score: " + score;
         }
     }
