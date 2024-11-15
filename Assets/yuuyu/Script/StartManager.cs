@@ -9,4 +9,8 @@ public class StartManager : MonoBehaviour
     {
         SceneManager.LoadScene("Input");
     }
+    public void Setumei()
+    {
+        SceneManager.LoadScene("IntoroScene");
+    }
 }

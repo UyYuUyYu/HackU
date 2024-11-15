@@ -9560,6 +9560,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400004}
   - component: {fileID: 114000010264141754}
+  - component: {fileID: 9003324056165481134}
   m_Layer: 0
   m_Name: IceEffect3
   m_TagString: Untagged
@@ -9600,6 +9601,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee2d51cd96616d7418f4bdf22e018f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9003324056165481134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48728c61159934428bbd3e6edf18738d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectNum: 5
 --- !u!1 &100006
 GameObject:
   m_ObjectHideFlags: 0

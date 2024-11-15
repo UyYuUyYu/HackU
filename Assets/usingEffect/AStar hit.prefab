@@ -9762,6 +9762,7 @@ GameObject:
   - component: {fileID: 5020039083877020516}
   - component: {fileID: 6299362341641363023}
   - component: {fileID: -5783529058116713448}
+  - component: {fileID: -7958991429514252833}
   m_Layer: 0
   m_Name: AStar hit
   m_TagString: Untagged
@@ -14659,6 +14660,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 0}
   delayBeforeCollision: 12
+--- !u!114 &-7958991429514252833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4535006216103734310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48728c61159934428bbd3e6edf18738d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectNum: 1
 --- !u!1 &7851872916918845318
 GameObject:
   m_ObjectHideFlags: 0
