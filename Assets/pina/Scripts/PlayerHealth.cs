@@ -13,9 +13,11 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField]
     private Text hpText;
+    private HPGageController hPGageController;
 
     private void Start()
     {
+        hPGageController=this.GetComponent<HPGageController>();
         currentHP = maxHP;
         UpdateHPText();
         Debug.Log("Player HP: " + currentHP);
@@ -40,6 +42,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void UpdateHPText()
     {
+        hPGageController.HPSet(currentHP);
         if (hpText != null)
         {
             hpText.text = "HP: " + currentHP;
