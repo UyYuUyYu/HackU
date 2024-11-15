@@ -160,6 +160,7 @@ public class TimeManager : MonoBehaviour
     private float spawnTimer = 5f; // 敵の生成タイミングを5秒に設定
     private float timeSinceLastSpawn = 0f; // 最後に生成してからの経過時間
 
+    //敵の生成のタイミング調整
     private void HandleSpawning()
     {
 
@@ -174,6 +175,29 @@ public class TimeManager : MonoBehaviour
                 timeSinceLastSpawn = 0f;
             }
         }
+        //フェーズ2の時 中ボス
+        else if(currentPhase == Phase.Phase2)
+        {
+            //SpawnMidBossEnemy();
+        }
+        //フェーズ3の時
+        else if(currentPhase == Phase.Phase3)
+        {
+            timeSinceLastSpawn += Time.deltaTime;
+
+            if (timeSinceLastSpawn >= spawnTimer)
+            {
+                SpawnEnemy();
+                SpawnEnemy();
+
+                timeSinceLastSpawn = 0f;
+            }
+        }
+        //フェーズ4の時 ボス
+        else
+        {
+            //SpawnBossEnemy();
+        }
     }
 
     public void SpawnEnemy()
@@ -183,7 +207,23 @@ public class TimeManager : MonoBehaviour
         enemyPrefab.gameObject.GetComponent<EnemyMovementScript>().centerPosition = this.centerPosition;
         Vector3 spawnPosition = GetSpawnPosition();
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        Debug.Log("Enemy spawned at " + spawnPosition);
+    }
+
+    public void SpawnMidBossEnemy()
+    {
+        // 敵をランダムに選択し、位置を取得して生成
+        GameObject enemyPrefab = midBoss;
+        enemyPrefab.gameObject.GetComponent<EnemyMovementScript>().centerPosition = this.centerPosition;
+        Vector3 spawnPosition = GetSpawnPosition();
+        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+    }
+    public void SpawnBossEnemy()
+    {
+        // 敵をランダムに選択し、位置を取得して生成
+        GameObject enemyPrefab = Boss;
+        enemyPrefab.gameObject.GetComponent<EnemyMovementScript>().centerPosition = this.centerPosition;
+        Vector3 spawnPosition = GetSpawnPosition();
+        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
     }
 
 }
