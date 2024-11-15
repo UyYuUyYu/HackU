@@ -515,7 +515,7 @@ namespace Mediapipe.Unity
                 return null;
 
             // Z座標を固定
-            position.z = -4f;
+            position.z = 0;
 
             var effect = Instantiate(prefab);
             effect.transform.position = position + _effectPositionOffset; // オフセットを適用
