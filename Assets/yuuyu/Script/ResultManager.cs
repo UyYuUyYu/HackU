@@ -13,36 +13,30 @@ public class ResultManager : MonoBehaviourPun
     [SerializeField] Text resurtMyNameText,resurtFriendNameText,resultMyScore,resurtFriendScore;
     // Start is called before the first frame update
     [ContextMenu("Set")]
-    void SetName()
+    void Start()
     {
-        SetFriendName();
+
         SetNameText();
+        ScoreHantei();
 
     }
     void SetNameText()
     {
-        resurtMyName=PhotonNetwork.NickName;
-        resurtMyNameText.text=resurtMyName;
-        resurtFriendNameText.text=resurtFriendName;
+        resurtMyNameText.text=NameInputPUN.myName;
+        resurtFriendNameText.text=NameInputPUN.friendName;
     }
 
-    void SetFriendName()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            print("名前出したい");
-            resurtFriendName = PhotonNetwork.PlayerList[1].NickName;
-        }
-        else
-        {
-            resurtFriendName= PhotonNetwork.PlayerList[0].NickName;
-        }
-    }
+   
 
     void ScoreHantei()
     {
+        this.GetComponent<ResultAnim>().InputScore12(SendScorePUN.myScore,SendScorePUN.friendScore);
+        //resultMyScore.text=SendScorePUN.myScore.ToString();
+        //resurtFriendScore.text=SendScorePUN.friendScore.ToString();
+
         int allSocre;
         allSocre=SendScorePUN.myScore+SendScorePUN.friendScore;
+        print(allSocre);
         if(allSocre<row)
         {
             rankC.SetActive(true);

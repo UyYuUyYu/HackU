@@ -18,7 +18,7 @@ public class TimeManager : MonoBehaviour
     
     [SerializeField] private SendScorePUN sendScorePUN;
 
-    [SerializeField] private GameObject timeUpText;
+    [SerializeField] private GameObject timeUpText,finishUI;
 
     private enum Phase
     {
@@ -94,6 +94,7 @@ public class TimeManager : MonoBehaviour
 
     private void TimeOut()
     {
+        finishUI.SetActive(true);
         currentPhase = Phase.Completed;
         Debug.Log("Time's up!"+scoreManager.GetScore());
         timeUpText.SetActive(true);

@@ -27,6 +27,7 @@ public class SendScorePUN : MonoBehaviourPun
     [PunRPC]
     private void SendFriendName(int _score)
     {
+        print("スコア送られた");
         friendScore=_score;
     }
 }
