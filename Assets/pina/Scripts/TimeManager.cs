@@ -94,11 +94,10 @@ public class TimeManager : MonoBehaviour
     private void TimeOut()
     {
         currentPhase = Phase.Completed;
-
+        Debug.Log("Time's up!");
         timeUpText.SetActive(true);
         SendScorePUN.myScore=scoreManager.GetScore();
-        Debug.Log("Time's up!");
-
+        
         SceneManager.LoadScene("Result");
 
     }
@@ -220,7 +219,7 @@ public class TimeManager : MonoBehaviour
     public void SpawnBossEnemy()
     {
         // 敵をランダムに選択し、位置を取得して生成
-        GameObject enemyPrefab = Boss;
+        GameObject enemyPrefab = boss;
         enemyPrefab.gameObject.GetComponent<EnemyMovementScript>().centerPosition = this.centerPosition;
         Vector3 spawnPosition = GetSpawnPosition();
         Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);

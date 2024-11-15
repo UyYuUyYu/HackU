@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/inobee/MediaPipeUnity/Samples/Scenes/Start Scene.unity
     guid: f7b359c19e6ae2d208e5ca4608b7c0b8
   - enabled: 1
+    path: Assets/yuuyu/Scene/Main.unity
+    guid: f525202bdbd4e400f8294640fef9e4a4
+  - enabled: 1
     path: Assets/yuuyu/Scene/Start.unity
     guid: a8c3ff53f05e0485195106747b6a8d28
   - enabled: 1
@@ -20,9 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/yuuyu/Scene/Result.unity
     guid: c10f844a18920484499e04e2f02ff2df
-  - enabled: 1
-    path: Assets/yuuyu/Scene/Main.unity
-    guid: f525202bdbd4e400f8294640fef9e4a4
   - enabled: 1
     path: Assets/yuuyu/Scene/IntoroScene.unity
     guid: af89322bc6e7a4160b722f3619dbb344
