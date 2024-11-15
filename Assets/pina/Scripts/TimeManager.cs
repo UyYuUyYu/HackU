@@ -47,6 +47,12 @@ public class TimeManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             UpdateTimerText();
+            if((timeLimit-currentTime)>87)
+            {
+                finishUI.SetActive(true);
+            }
+                
+            
 
             if (currentTime <= 0)
             {
@@ -94,7 +100,7 @@ public class TimeManager : MonoBehaviour
 
     private void TimeOut()
     {
-        finishUI.SetActive(true);
+        
         currentPhase = Phase.Completed;
         Debug.Log("Time's up!"+scoreManager.GetScore());
         timeUpText.SetActive(true);
