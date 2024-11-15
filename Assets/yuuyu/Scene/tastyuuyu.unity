@@ -532,6 +532,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &926302563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -814,6 +817,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &989544591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,6 +1133,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &1097694117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,6 +1882,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &1392752847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2079,6 +2091,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &1455152784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2206,6 +2221,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &1477032836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2694,6 +2712,13 @@ MonoBehaviour:
   timerText: {fileID: 1227877955}
   sendScorePUN: {fileID: 0}
   timeUpText: {fileID: 0}
+  enemies:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  midBoss: {fileID: 0}
+  boss: {fileID: 0}
+  centerPosition: {fileID: 0}
 --- !u!114 &1899073136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2885,6 +2910,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   centerPosition: {fileID: 1553966556}
   moveDuration: 14
+  movementType: 0
+  ballPrefab: {fileID: 0}
+  arrowPrefab: {fileID: 0}
 --- !u!114 &2031709225
 MonoBehaviour:
   m_ObjectHideFlags: 0

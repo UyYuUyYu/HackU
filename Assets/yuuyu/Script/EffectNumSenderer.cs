@@ -8,8 +8,13 @@ public class EffectNumSenderer : MonoBehaviour
     private CheckHandNumPUN  checkHandNumPUN;
     void Awake()
     {
+        if(effectNum==4)
+        {
+            GameObject.Find("GameManager").GetComponent<PlayerHealth>().Heal(2);
+        }
         checkHandNumPUN=GameObject.Find("PunManager").GetComponent<CheckHandNumPUN>();
         checkHandNumPUN.SendNumber(effectNum);
+        
     }
 
   

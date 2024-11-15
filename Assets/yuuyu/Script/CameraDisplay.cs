@@ -4,9 +4,12 @@ using UnityEngine.UI;
 public class CameraDisplay : MonoBehaviour
 {
     private WebCamTexture webCamTexture;
+    private bool isCam;
+    public GameObject camView;
 
     void Start()
     {
+        isCam=false;
         // WebCamTextureのインスタンスを作成
         webCamTexture = new WebCamTexture();
 
@@ -34,6 +37,19 @@ public class CameraDisplay : MonoBehaviour
         if (webCamTexture != null)
         {
             webCamTexture.Stop();
+        }
+    }
+    public void ChangeCam()
+    {
+        if(isCam)
+        {
+            camView.SetActive(false);
+            isCam=false;
+        }
+        else
+        {
+            camView.SetActive(true);
+            isCam=true;
         }
     }
 }

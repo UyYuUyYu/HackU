@@ -10,9 +10,14 @@ public class Enemy : MonoBehaviour
 
     [SerializeField]
     private Renderer enemyRenderer; // オブジェクトのRenderer
+    private ScoreManager scoreManager;
+
+    [SerializeField]
+    private int enemyPoint;
 
     private void Start()
     {
+        scoreManager=GameObject.Find("GameManager").GetComponent<ScoreManager>();
         // 最大HPを保存
         maxHp = hp;
 
@@ -60,6 +65,7 @@ public class Enemy : MonoBehaviour
 
     public void Die()
     {
+        scoreManager.ScoreUp(enemyPoint);
         // 死亡時にオブジェクトを削除
         Destroy(gameObject);
     }
