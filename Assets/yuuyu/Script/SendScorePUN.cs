@@ -16,17 +16,10 @@ public class SendScorePUN : MonoBehaviourPun
         isChangeScore=false;
         myScore=0;
     }
-    void Update()
-    {
-        if((myScore!=0)&&(isChangeScore=false))
-        {
-            isChangeScore=true;
-            SendScore();
-        }
-            
-    }
+   
     public void SendScore()
     {
+        print("スコア送った");
          photonView.RPC("SendFriendName", RpcTarget.Others, myScore);
     }
 

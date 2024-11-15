@@ -35,6 +35,7 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         scoreManager=this.GetComponent<ScoreManager>();
+        sendScorePUN=GameObject.Find("PunManager").GetComponent<SendScorePUN>();
         currentTime = timeLimit;
         UpdateTimerText();
         Debug.Log("Time Left: " + FormatTime(currentTime));
@@ -94,8 +95,9 @@ public class TimeManager : MonoBehaviour
     private void TimeOut()
     {
         currentPhase = Phase.Completed;
-        Debug.Log("Time's up!");
+        Debug.Log("Time's up!"+scoreManager.GetScore());
         timeUpText.SetActive(true);
+        sendScorePUN.SendScore();
         SendScorePUN.myScore=scoreManager.GetScore();
         
         SceneManager.LoadScene("Result");

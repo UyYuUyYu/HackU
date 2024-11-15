@@ -9,7 +9,7 @@ public class NameInputPUN : MonoBehaviourPunCallbacks
 {
     
     [SerializeField] private Text inputFieldText,checkNameText,lastCheckNameText;
-    public static string myName;
+    public static string myName,friendName;
     // Start is called before the first frame update
     void Start()
     {

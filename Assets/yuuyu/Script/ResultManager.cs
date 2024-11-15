@@ -30,7 +30,8 @@ public class ResultManager : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            resurtFriendName = PhotonNetwork.PlayerList[0].NickName;
+            print("名前出したい");
+            resurtFriendName = PhotonNetwork.PlayerList[1].NickName;
         }
         else
         {

@@ -404,7 +404,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Player1
+  m_Text: p1
 --- !u!222 &219542089
 CanvasRenderer:
   m_ObjectHideFlags: 0

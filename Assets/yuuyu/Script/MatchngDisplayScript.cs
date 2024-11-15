@@ -56,5 +56,6 @@ public class MatchngDisplayScript : MonoBehaviourPun
     private void ReceiveName(string _name)
     {
         friendNameText.text=_name;
+        NameInputPUN.friendName=_name;
     }
 }
