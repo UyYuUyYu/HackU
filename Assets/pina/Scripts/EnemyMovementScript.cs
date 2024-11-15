@@ -151,6 +151,8 @@ private void MoveBossEnemy()
     Vector3 targetPosition = new Vector3(centerPosition.position.x, centerPosition.position.y, transform.position.z);
 
     Vector3 direction = targetPosition - transform.position;
+    transform.LookAt(targetPosition);
+
 
     // 最初の動き (①) を実行
     transform.DOMove(new Vector3(8, 0, 0), 2f).OnComplete(() =>
@@ -160,8 +162,23 @@ private void MoveBossEnemy()
 
         // ② DORotateをしてから6秒待機
         movementSequence.Append(transform.DORotate(Quaternion.LookRotation(direction).eulerAngles, 2)
-              .SetEase(Ease.Linear))
-                        .AppendInterval(6f);
+              .SetEase(Ease.Linear)
+              .OnComplete(() =>
+              {
+                  // DORotate完了後にShotingトリガーをオン
+                  GetComponent<Animator>().SetTrigger("Shoting");
+              }))
+              .AppendInterval(3f);
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Reloading");
+        });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Idle");
+        });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
 
         // 点滅処理
         movementSequence.AppendCallback(() =>
@@ -173,14 +190,37 @@ private void MoveBossEnemy()
         });
         movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
 
-
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Running");
+        });
         // ③ 座標を (-8, 0, 0) に移動
         movementSequence.Append(transform.DOMove(new Vector3(-8, 0, 0), 1f).SetEase(Ease.InQuad));
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Idle");
+        });
 
         // ④ DORotateをしてから6秒待機
         movementSequence.Append(transform.DORotate(Quaternion.LookRotation(-direction).eulerAngles, 2)
-              .SetEase(Ease.Linear))
-                        .AppendInterval(6f);
+              .SetEase(Ease.Linear)
+              .OnComplete(() =>
+              {
+                  // DORotate完了後にShotingトリガーをオン
+                  GetComponent<Animator>().SetTrigger("Shoting");
+              }))
+              .AppendInterval(3f);
+
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Reloading");
+        });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Idle");
+        });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
 
         // 点滅処理
         movementSequence.AppendCallback(() =>
@@ -192,14 +232,22 @@ private void MoveBossEnemy()
         });
         movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
 
-
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Running");
+        });
         // ⑤ 座標を (8, 0, 0) に移動
         movementSequence.Append(transform.DOMove(new Vector3(8, 0, 0), 1f).SetEase(Ease.InQuad));
+        movementSequence.AppendCallback(() =>
+        {
+            GetComponent<Animator>().SetTrigger("Idle");
+        });
 
         // シーケンスをループさせる (②から繰り返す)
         movementSequence.SetLoops(-1); // -1は無限ループ
     });
 }
+
 
 
 
