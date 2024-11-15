@@ -151,7 +151,7 @@ private void MoveBossEnemy()
     Vector3 targetPosition = new Vector3(centerPosition.position.x, centerPosition.position.y, transform.position.z);
 
     Vector3 direction = targetPosition - transform.position;
-    transform.LookAt(targetPosition);
+    //transform.LookAt(targetPosition);
 
 
     // 最初の動き (①) を実行
@@ -164,11 +164,19 @@ private void MoveBossEnemy()
         movementSequence.Append(transform.DORotate(Quaternion.LookRotation(direction).eulerAngles, 2)
               .SetEase(Ease.Linear)
               .OnComplete(() =>
-              {
-                  // DORotate完了後にShotingトリガーをオン
-                  GetComponent<Animator>().SetTrigger("Shoting");
-              }))
-              .AppendInterval(3f);
+                {
+                    // DORotate完了後にShotingトリガーをオン
+                    GetComponent<Animator>().SetTrigger("Shoting");
+
+                    // 0.2秒ごとにBossShootBall()を呼び出す
+                    InvokeRepeating(nameof(BossShootBall), 1.5f, 0.2f);
+                }))
+                .AppendInterval(3f) // 3秒間Shotingを維持
+                .AppendCallback(() =>
+                {
+                    // 3秒後にBossShootBallの呼び出しを停止
+                    CancelInvoke(nameof(BossShootBall));
+                });
         movementSequence.AppendCallback(() =>
         {
             GetComponent<Animator>().SetTrigger("Reloading");
@@ -205,11 +213,19 @@ private void MoveBossEnemy()
         movementSequence.Append(transform.DORotate(Quaternion.LookRotation(-direction).eulerAngles, 2)
               .SetEase(Ease.Linear)
               .OnComplete(() =>
-              {
-                  // DORotate完了後にShotingトリガーをオン
-                  GetComponent<Animator>().SetTrigger("Shoting");
-              }))
-              .AppendInterval(3f);
+                {
+                    // DORotate完了後にShotingトリガーをオン
+                    GetComponent<Animator>().SetTrigger("Shoting");
+
+                    // 0.2秒ごとにBossShootBall()を呼び出す
+                    InvokeRepeating(nameof(BossShootBall), 1.5f, 0.2f);
+                }))
+                .AppendInterval(3f) // 3秒間Shotingを維持
+                .AppendCallback(() =>
+                {
+                    // 3秒後にBossShootBallの呼び出しを停止
+                    CancelInvoke(nameof(BossShootBall));
+                });
 
         movementSequence.AppendCallback(() =>
         {
@@ -242,6 +258,7 @@ private void MoveBossEnemy()
         {
             GetComponent<Animator>().SetTrigger("Idle");
         });
+        movementSequence.AppendInterval(2f); // 点滅が完了するまでの時間を待機
 
         // シーケンスをループさせる (②から繰り返す)
         movementSequence.SetLoops(-1); // -1は無限ループ
@@ -285,6 +302,31 @@ private void MoveBossEnemy()
         // ローカル座標でのDOPunchPositionを繰り返し
         transform.DOPunchPosition(new Vector3(0.4f, 0, 0), 2f, 5, 1f)
                 .SetRelative(true);
+
+        Destroy(ball, 10);
+    }
+
+    private void BossShootBall()
+    {
+        GameObject ball;
+        if(transform.position.x > 0 ){
+            // Ballオブジェクトを現在の位置に生成
+             ball = Instantiate(ballPrefab, transform.position + new Vector3(-2,2.5f,0.372f), transform.rotation);
+        }else{
+            // Ballオブジェクトを現在の位置に生成
+             ball = Instantiate(ballPrefab, transform.position + new Vector3(2,2.5f,0.372f), transform.rotation);
+        }
+
+        
+        // Ballに前方方向の力を加えて放出
+        Rigidbody rb = ball.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.AddForce(transform.forward * 20f, ForceMode.Impulse); // 必要に応じて力の強さを調整してください
+        }
+
+        Destroy(ball, 10);
+
     }
 
 
