@@ -37,7 +37,7 @@ public class ResultManager : MonoBehaviourPun
         int allSocre;
         allSocre=SendScorePUN.myScore+SendScorePUN.friendScore;
         print(allSocre);
-        if(allSocre<row)
+        if(allSocre<=row)
         {
             rankC.SetActive(true);
             print("c");

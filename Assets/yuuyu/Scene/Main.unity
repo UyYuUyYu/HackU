@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028352, g: 0.22571363, b: 0.30692217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1301,7 +1301,7 @@ MonoBehaviour:
   timerText: {fileID: 1921940874}
   sendScorePUN: {fileID: 0}
   timeUpText: {fileID: 944535451}
-  finishUI: {fileID: 816671812}
+  finishUI: {fileID: 1794270518}
   enemies:
   - {fileID: 6231259403254518208, guid: 83d54a3430d4a407c853b6d3bbeae049, type: 3}
   - {fileID: 2962935237613993525, guid: 61f84608746ca4a3aa573a63b87b0fb2, type: 3}
@@ -2658,6 +2658,11 @@ PrefabInstance:
 --- !u!224 &1794270517 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4695956204445267045, guid: 58094cd1b1064453abfad5a97bf885ff, type: 3}
+  m_PrefabInstance: {fileID: 1794270516}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1794270518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4695956204445267044, guid: 58094cd1b1064453abfad5a97bf885ff, type: 3}
   m_PrefabInstance: {fileID: 1794270516}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1921940872
