@@ -47,8 +47,6 @@ namespace Mediapipe.Unity
         [SerializeField]
         private UnityEngine.Events.UnityEvent<int> OnValueChanged;
 
-
-
         // 数値変更時にイベントを発火
         private void NotifyValueChanged()
         {
@@ -162,156 +160,130 @@ namespace Mediapipe.Unity
                 ClearGeneratedObjects();
 
                 // 両手を使うポーズの場合の処理
-                // 両手を使うポーズの場合の処理
                 if (targets.Count >= 2)
                 {
                     var leftHand = targets[0];
                     var rightHand = targets[1];
 
-                    // 他の両手ポーズ判定（例: ハートポーズ）
                     if (IsHeartPose(leftHand, rightHand))
                     {
                         Vector3 leftHandPosition = ConvertToWorldPosition(leftHand.Landmark[0]);
                         Vector3 rightHandPosition = ConvertToWorldPosition(rightHand.Landmark[0]);
 
                         UpdateEffectByValue(4, leftHandPosition, rightHandPosition);
-                        // Debug.Log("Heart pose detected.");
                         return;
                     }
 
-                    return; // 両手が認識されているが有効なポーズではない場合、片手ポーズをスキップ
+                    return;
                 }
 
                 // 片手ポーズの判定
                 for (int i = 0; i < targets.Count; i++)
                 {
                     var landmarkList = targets[i];
-
-                    // 手首または指先の位置を取得
-                    Vector3 handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]); // 手首
+                    Vector3 handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]);
 
                     if (IsOpenHand(landmarkList))
                     {
-                        UpdateEffectByValue(1, handPosition); // パーのエフェクトを生成
+                        UpdateEffectByValue(1, handPosition);
                     }
                     else if (IsVSignHand(landmarkList))
                     {
-                        UpdateEffectByValue(2, handPosition); // チョキのエフェクトを生成
+                        UpdateEffectByValue(2, handPosition);
                     }
                     else if (IsFistHand(landmarkList))
                     {
-                        UpdateEffectByValue(3, handPosition); // グーのエフェクトを生成
+                        UpdateEffectByValue(3, handPosition);
                     }
                     else if (IsGunPose(landmarkList))
                     {
-                        if (IsIndexFingerMovingUpward(landmarkList))
-                        {
-                            handPosition = ConvertToWorldPosition(landmarkList.Landmark[0]);
-                            UpdateEffectByValue(5, handPosition); // 上向きのエフェクト
-                            // Debug.Log("銃ポーズ + 上向きが検出されました。エフェクトを再生します。");
-                        }
-                        else
-                        {
-                            // Debug.Log("銃ポーズ検出。上向き条件が満たされていません。");
-                        }
+                        UpdateEffectByValue(6, handPosition, null, landmarkList);
                     }
                     else
                     {
-                        UpdateEffectByValue(0, handPosition); // 無効なエフェクト
+                        UpdateEffectByValue(0, handPosition);
                     }
                 }
             }
         }
 
-        // 指定の手の状態に基づくエフェクトの描画
-        public void UpdateEffectByValue(int newValue, Vector3 handPosition, Vector3? secondaryPosition = null, NormalizedLandmarkList landmarkList = null)
-
+        public void UpdateEffectByValue(
+            int newValue,
+            Vector3 handPosition,
+            Vector3? secondaryPosition = null,
+            NormalizedLandmarkList landmarkList = null
+        )
         {
-            if (isCooldownActive)
+            if (isCooldownActive && newValue != 5)
             {
-                // Debug.Log("Effect is on cooldown. Ignoring input.");
-                return; // クールダウン中は何もしない
+                Debug.Log("クールダウン中です。処理を無視します。");
+                return;
             }
-
 
             if (_currentValue != newValue)
             {
                 _currentValue = newValue;
 
-                // 現在のエフェクトを削除
                 if (_currentEffect != null)
                 {
                     Destroy(_currentEffect);
                     _currentEffect = null;
                 }
 
-                // エフェクト生成位置を決定
                 Vector3 effectPosition = handPosition;
                 if (secondaryPosition.HasValue)
                 {
                     effectPosition = Vector3.Lerp(handPosition, secondaryPosition.Value, 0.5f);
                 }
 
-                // 銃魔法の場合、方向に基づいて位置を調整
-                if (newValue == 5 && landmarkList != null) // 銃魔法に対応
-                {
-                    Vector3 direction = CalculateIndexFingerDirection(landmarkList); // 人差し指の方向を取得
-
-
-                    float offset = 0.2f; // X座標のずらし量
-                    if (direction.x > 0.1f) // 人差し指が右向きの場合
-                    {
-                        effectPosition.x += offset;
-                        Debug.Log("人差し指が右向き。エフェクトを右にずらします。");
-                    }
-                    else if (direction.x < -0.1f) // 人差し指が左向きの場合
-                    {
-                        effectPosition.x -= offset;
-                        Debug.Log("人差し指が左向き。エフェクトを左にずらします。");
-                    }
-                }
-
-                // 数値に応じたエフェクト生成と効果音再生
                 switch (_currentValue)
                 {
                     case 0:
                         break;
                     case 1:
-                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[0], effectPosition);
+                        _currentEffect = GenerateEffectAtPosition(
+                            _landmarkPrefabs[0],
+                            effectPosition
+                        );
                         PlayEffectSound(0);
                         break;
                     case 2:
-                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[1], effectPosition);
+                        _currentEffect = GenerateEffectAtPosition(
+                            _landmarkPrefabs[1],
+                            effectPosition
+                        );
                         PlayEffectSound(1);
                         break;
                     case 3:
-                        _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[2], effectPosition);
+                        _currentEffect = GenerateEffectAtPosition(
+                            _landmarkPrefabs[2],
+                            effectPosition
+                        );
                         PlayEffectSound(2);
                         break;
-                    case 4:
+                    case 4: // 回復魔法
                         _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[3], effectPosition);
                         PlayEffectSound(3);
                         break;
-                    case 5:
+                    case 6: // 銃魔法
                         _currentEffect = GenerateEffectAtPosition(_landmarkPrefabs[4], effectPosition);
                         PlayEffectSound(4);
+                        Debug.Log("銃魔法エフェクトを生成しました！");
                         break;
                     default:
                         Debug.Log($"Effect for value {_currentValue} is not implemented.");
                         break;
                 }
 
-                // クールダウンを開始
                 StartCooldown();
             }
         }
 
-        // 銃のポーズを判定するメソッド
         private bool IsGunPose(NormalizedLandmarkList landmarkList)
         {
             if (landmarkList == null || landmarkList.Landmark.Count < 21)
             {
-                // Debug.Log("ランドマークが不足しています。");
+                Debug.LogWarning("ランドマークデータが不足しています。");
                 return false; // ランドマークが不足している場合は判定しない
             }
 
@@ -328,6 +300,10 @@ namespace Mediapipe.Unity
                 landmarkList.Landmark[wrist],
                 landmarkList.Landmark[indexTip]
             );
+            float wristToThumb = GetDistance(
+                landmarkList.Landmark[wrist],
+                landmarkList.Landmark[thumbTip]
+            );
             float wristToMiddle = GetDistance(
                 landmarkList.Landmark[wrist],
                 landmarkList.Landmark[middleTip]
@@ -340,39 +316,17 @@ namespace Mediapipe.Unity
                 landmarkList.Landmark[wrist],
                 landmarkList.Landmark[pinkyTip]
             );
-            float wristToThumb = GetDistance(
-                landmarkList.Landmark[wrist],
-                landmarkList.Landmark[thumbTip]
-            );
 
-            // 条件：親指と人差し指が長く、他の指は短い
-            bool isThumbExtended =
-                wristToThumb > wristToMiddle
-                && wristToThumb > wristToRing
-                && wristToThumb > wristToPinky;
-            bool isIndexExtended =
-                wristToIndex > wristToMiddle
-                && wristToIndex > wristToRing
-                && wristToIndex > wristToPinky;
+            // 条件: 親指と人差し指が伸びている & 他の指が折りたたまれている
+            bool isThumbExtended = wristToThumb > wristToMiddle;
+            bool isIndexExtended = wristToIndex > wristToMiddle;
             bool isOtherFingersFolded =
                 wristToMiddle < wristToIndex
                 && wristToRing < wristToIndex
                 && wristToPinky < wristToIndex;
 
-            // 条件を満たすか確認
-            Debug.Log(
-                $"Thumb Extended: {isThumbExtended}, Index Extended: {isIndexExtended}, Other Fingers Folded: {isOtherFingersFolded}"
-            );
-
-            // 条件をすべて満たしたら銃ポーズ
-            bool isGunPose = isThumbExtended && isIndexExtended && isOtherFingersFolded;
-
-            if (isGunPose)
-            {
-                Debug.Log("銃ポーズが検出されました。");
-            }
-
-            return isGunPose;
+            // 銃のポーズを判定
+            return isThumbExtended && isIndexExtended && isOtherFingersFolded;
         }
 
         private void StartCooldown()
