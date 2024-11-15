@@ -945,7 +945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 100
-  hpText: {fileID: 0}
+  hpText: {fileID: 1402986643}
 --- !u!114 &975751699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -971,7 +971,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dac1d85f389a6411a995ac9e4f5fc441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 10
+  timeLimit: 90
   timerText: {fileID: 1921940874}
   sendScorePUN: {fileID: 0}
   timeUpText: {fileID: 944535451}
