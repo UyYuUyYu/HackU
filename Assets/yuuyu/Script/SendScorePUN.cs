@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using Photon.Pun;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PhotonView))]
 public class SendScorePUN : MonoBehaviourPun
@@ -17,17 +18,19 @@ public class SendScorePUN : MonoBehaviourPun
         myScore=0;
     }
    
-    public void SendScore()
+    public void SendScore(int _myScore)
     {
         print("スコア送った");
-         photonView.RPC("SendFriendName", RpcTarget.Others, myScore);
+        myScore=_myScore;
+        photonView.RPC("SendFriendName", RpcTarget.Others, _myScore);
     }
 
 
     [PunRPC]
     private void SendFriendName(int _score)
     {
-        print("スコア送られた");
+        print("スコア送られた"+_score);
         friendScore=_score;
+        SceneManager.LoadScene("Result");
     }
 }

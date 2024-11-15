@@ -104,10 +104,8 @@ public class TimeManager : MonoBehaviour
         currentPhase = Phase.Completed;
         Debug.Log("Time's up!"+scoreManager.GetScore());
         timeUpText.SetActive(true);
-        sendScorePUN.SendScore();
-        SendScorePUN.myScore=scoreManager.GetScore();
-        
-        SceneManager.LoadScene("Result");
+        print("自分の点数"+scoreManager.GetScore());
+        sendScorePUN.SendScore(scoreManager.GetScore());
 
     }
 
