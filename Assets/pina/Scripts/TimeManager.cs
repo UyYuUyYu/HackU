@@ -186,6 +186,11 @@ public class TimeManager : MonoBehaviour
         //フェーズ2の時 中ボス
         else if(currentPhase == Phase.Phase2)
         {
+            if (timeSinceLastSpawn >= spawnTimer)
+            {
+                SpawnEnemy();
+                timeSinceLastSpawn = 0f;
+            }
             //SpawnMidBossEnemy();
         }
         //フェーズ3の時
