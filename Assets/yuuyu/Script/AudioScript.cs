@@ -9,7 +9,7 @@ public class AudioScript : MonoBehaviour
    void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
     }
 
     public void PlayStart()

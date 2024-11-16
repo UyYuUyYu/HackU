@@ -47,7 +47,7 @@ public class TimeManager : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             UpdateTimerText();
-            if((timeLimit-currentTime)>87)
+            if(currentTime<3)
             {
                 finishUI.SetActive(true);
             }
