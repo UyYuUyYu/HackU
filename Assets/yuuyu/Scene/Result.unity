@@ -1781,9 +1781,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298d484a537e044a6b81857ca46f6992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  row: 30
-  hight: 120
-  mid: 60
+  row: 40
+  hight: 150
+  mid: 80
   rankS: {fileID: 1326631976}
   rankA: {fileID: 35266533}
   rankB: {fileID: 1002563674}
