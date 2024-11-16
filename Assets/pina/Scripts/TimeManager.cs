@@ -107,7 +107,7 @@ public class TimeManager : MonoBehaviour
         timeUpText.SetActive(true);
         print("自分の点数"+scoreManager.GetScore());
         //sendScorePUN.SendScore(scoreManager.GetScore());
-        SceneManager.LoadScene("Result");
+        //SceneManager.LoadScene("Result");
 
     }
 
@@ -204,6 +204,11 @@ public class TimeManager : MonoBehaviour
         //フェーズ4の時 ボス
         else
         {
+            if (timeSinceLastSpawn >= spawnTimer)
+            {
+                SpawnEnemy();
+                timeSinceLastSpawn = 0f;
+            }
             //SpawnBossEnemy();
         }
     }
