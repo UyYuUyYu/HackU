@@ -18,6 +18,7 @@ public class ResultManager : MonoBehaviourPun
 
         SetNameText();
         ScoreHantei();
+        StartCoroutine("WaitResult");
 
     }
     void SetNameText()
@@ -36,6 +37,7 @@ public class ResultManager : MonoBehaviourPun
 
         int allSocre;
         allSocre=SendScorePUN.myScore+SendScorePUN.friendScore;
+        print("my"+SendScorePUN.myScore);
         print(allSocre);
         if(allSocre<=row)
         {
@@ -59,6 +61,12 @@ public class ResultManager : MonoBehaviourPun
         }
     }
 
+    private IEnumerator WaitResult()
+    {
+        yield return new WaitForSeconds(3);
+        PhotonNetwork.Disconnect(); 
+
+    }
 
 
 }
