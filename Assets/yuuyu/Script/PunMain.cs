@@ -17,6 +17,7 @@ public class PunMain : MonoBehaviourPunCallbacks
 
         if(SceneManager.GetActiveScene().name=="MatchWait")
         {
+            print("Match");
             matchngDisplayScript=this.GetComponent<MatchngDisplayScript>();
             ConentPUNServer();
         } 
@@ -44,8 +45,9 @@ public class PunMain : MonoBehaviourPunCallbacks
 
     public void Restart()
     {
+        PhotonNetwork.Disconnect(); 
         SendScorePUN.myScore=0;
-        SceneManager.LoadScene("MatchWait");
+        SceneManager.LoadScene("Input");
     }
 
     public void SetNickName()
