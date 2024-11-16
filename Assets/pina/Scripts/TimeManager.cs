@@ -50,6 +50,7 @@ public class TimeManager : MonoBehaviour
             if(currentTime<3)
             {
                 finishUI.SetActive(true);
+                sendScorePUN.SendScore(scoreManager.GetScore());
             }
                 
             
@@ -105,7 +106,7 @@ public class TimeManager : MonoBehaviour
         Debug.Log("Time's up!"+scoreManager.GetScore());
         timeUpText.SetActive(true);
         print("自分の点数"+scoreManager.GetScore());
-        sendScorePUN.SendScore(scoreManager.GetScore());
+        //sendScorePUN.SendScore(scoreManager.GetScore());
         SceneManager.LoadScene("Result");
 
     }
