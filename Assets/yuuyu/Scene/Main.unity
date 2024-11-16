@@ -1405,7 +1405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dac1d85f389a6411a995ac9e4f5fc441, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeLimit: 90
+  timeLimit: 30
   timerText: {fileID: 944535453}
   sendScorePUN: {fileID: 0}
   timeUpText: {fileID: 944535451}
@@ -1415,7 +1415,7 @@ MonoBehaviour:
   - {fileID: 2962935237613993525, guid: 61f84608746ca4a3aa573a63b87b0fb2, type: 3}
   - {fileID: 4944320270812254179, guid: f1f8de17493bc472facdc84f354463ee, type: 3}
   midBoss: {fileID: 0}
-  boss: {fileID: 0}
+  boss: {fileID: 4155073831156787614, guid: 0987b6f2c5a2b418da4760e49acfcf11, type: 3}
   centerPosition: {fileID: 1170962660}
 --- !u!4 &975751701
 Transform:

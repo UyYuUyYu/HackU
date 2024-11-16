@@ -140,6 +140,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private GameObject boss;
 
     public Transform centerPosition;
+    private bool bossFlag = false;
 
 
     // 生成位置を決定する関数
@@ -209,11 +210,17 @@ public class TimeManager : MonoBehaviour
         //フェーズ4の時 ボス
         else
         {
+            if(bossFlag == false){
+                SpawnBossEnemy();
+                bossFlag = true;
+            }
+            /*
             if (timeSinceLastSpawn >= spawnTimer)
             {
                 SpawnEnemy();
                 timeSinceLastSpawn = 0f;
             }
+            */
             //SpawnBossEnemy();
         }
     }
@@ -240,8 +247,7 @@ public class TimeManager : MonoBehaviour
         // 敵をランダムに選択し、位置を取得して生成
         GameObject enemyPrefab = boss;
         enemyPrefab.gameObject.GetComponent<EnemyMovementScript>().centerPosition = this.centerPosition;
-        Vector3 spawnPosition = GetSpawnPosition();
-        Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        Instantiate(enemyPrefab, new Vector3(11, 0, 0), Quaternion.identity);
     }
 
 }
