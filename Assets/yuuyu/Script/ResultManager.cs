@@ -49,12 +49,12 @@ public class ResultManager : MonoBehaviourPun
             rankB.SetActive(true);
             print("b");
         }
-        else if((allSocre>mid)&&(allSocre<hight))
+        else if((allSocre>=mid)&&(allSocre<hight))
         {
             rankA.SetActive(true);
             print("a");
         }
-        else if(allSocre>hight)
+        else if(allSocre>=hight)
         {
             rankS.SetActive(true);
             print("s");
